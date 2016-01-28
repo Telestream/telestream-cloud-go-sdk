@@ -1,14 +1,14 @@
 # telestream-cloud-go-sdk
 
 [![API Reference](http://img.shields.io/badge/api-reference-blue.svg)](http://cloud.telestream.net/docs#api)
-[![GoDoc](https://godoc.org/github.com/telestream/telestream-cloud-go-sdk?status.svg)](http://godoc.org/github.com/telestream/telestream-cloud-go-sdk)
+[![GoDoc](https://godoc.org/github.com/Telestream/telestream-cloud-go-sdk?status.svg)](http://godoc.org/github.com/Telestream/telestream-cloud-go-sdk)
 
 telestream-cloud-go-sdk is the official Telestream Cloud SDK for the Go programming language.
 
 ## Installation
 
 
-    go get github.com/telestream/telestream-cloud-go-sdk/...
+    go get github.com/Telestream/telestream-cloud-go-sdk/...
 
 
 ## Using flip
@@ -23,7 +23,7 @@ import (
   "log"
   "os"
 
-  "github.com/telestream/telestream-cloud-go-sdk/flip"
+  "github.com/Telestream/telestream-cloud-go-sdk/flip"
 )
 
 func main() {
@@ -60,4 +60,4 @@ func main() {
 }
 ```
 
-For more information and examples look at [GoDoc](http://godoc.org/github.com/telestream/telestream-cloud-go-sdk/flip).
+For more information and examples look at [GoDoc](http://godoc.org/github.com/Telestream/telestream-cloud-go-sdk/flip).

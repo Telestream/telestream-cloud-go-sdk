@@ -3,7 +3,7 @@ package flip_test
 import (
 	"fmt"
 
-	"github.com/telestream/telestream-cloud-go-sdk/flip"
+	"github.com/Telestream/telestream-cloud-go-sdk/flip"
 )
 
 func ExampleFlip_Factories() {

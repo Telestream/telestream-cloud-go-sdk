@@ -11,8 +11,8 @@ import (
 	"os"
 	"reflect"
 
+	"github.com/Telestream/telestream-cloud-go-sdk/client"
 	"github.com/ernesto-jimenez/go-querystring/query"
-	"github.com/telestream/telestream-cloud-go-sdk/client"
 )
 
 // Factory holds the information about the factory. It is capable of calling

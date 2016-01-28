@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/telestream/telestream-cloud-go-sdk/client"
+	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
 
 const namespace = "v3.0"

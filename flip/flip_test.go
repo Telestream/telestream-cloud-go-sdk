@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/telestream/telestream-cloud-go-sdk/client"
+	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
 
 func newClient(host string) *client.Client {

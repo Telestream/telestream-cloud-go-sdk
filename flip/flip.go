@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/telestream/telestream-cloud-go-sdk/client"
+	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
 
 // Flip wraps Telestream Client. Flip client is capable of listing all

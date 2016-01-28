@@ -2,6 +2,7 @@
 
 [![API Reference](http://img.shields.io/badge/api-reference-blue.svg)](http://cloud.telestream.net/docs#api)
 [![GoDoc](https://godoc.org/github.com/Telestream/telestream-cloud-go-sdk?status.svg)](http://godoc.org/github.com/Telestream/telestream-cloud-go-sdk)
+[![Circle CI](https://circleci.com/gh/Telestream/telestream-cloud-go-sdk/tree/master.svg?style=svg)](https://circleci.com/gh/Telestream/telestream-cloud-go-sdk/tree/master)
 
 telestream-cloud-go-sdk is the official Telestream Cloud SDK for the Go programming language.
 

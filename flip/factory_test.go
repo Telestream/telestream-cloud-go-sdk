@@ -573,6 +573,16 @@ func TestFactoryUpdate(t *testing.T) {
 				w.Write(mustMarshal(p))
 				return
 			case urlPath("notifications.json"):
+				// check default values
+				if r.FormValue("events[encoding_progress]") != "false" ||
+					r.FormValue("events[video_created]") != "false" {
+					err := client.Error{
+						Code:    500,
+						Message: "default values were not provided",
+					}
+					http.Error(w, string(mustMarshal(err)), err.Code)
+					return
+				}
 				w.Write(mustMarshal(testNotification))
 				return
 			}

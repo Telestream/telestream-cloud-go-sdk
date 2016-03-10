@@ -333,13 +333,13 @@ func (p *Notification) UpdatePath() (string, error) {
 // Events hold the information on which events the notification should be sent.
 type Events struct {
 	// EncodingCompleted - notify when encoding has been completed.
-	EncodingCompleted bool `json:"encoding_completed,omitempty" url:"encoding_completed,omitempty"`
+	EncodingCompleted bool `json:"encoding_completed" url:"encoding_completed"`
 	// EncodingProgress - notify when encoding started.
-	EncodingProgress bool `json:"encoding_progress,omitempty" url:"encoding_progress,omitempty"`
-	//VideoCreated - notify when video has been created.
-	VideoCreated bool `json:"video_created,omitempty" url:"video_created,omitempty"`
+	EncodingProgress bool `json:"encoding_progress" url:"encoding_progress"`
+	// VideoCreated - notify when video has been created.
+	VideoCreated bool `json:"video_created" url:"video_created"`
 	// VideoEncoded - notify when all encodings have been completed.
-	VideoEncoded bool `json:"video_encoded,omitempty" url:"video_encoded,omitempty"`
+	VideoEncoded bool `json:"video_encoded" url:"video_encoded"`
 }
 
 // EncodingRequest defines desired filters while getting a list of encodings.

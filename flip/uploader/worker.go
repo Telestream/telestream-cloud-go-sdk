@@ -48,7 +48,7 @@ func (w *worker) handle(d *delivery) error {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode >= 400 {
-		return err
+		return fmt.Errorf("error: status code: %d", resp.StatusCode)
 	}
 	atomic.AddInt32(w.partCounter, 1)
 	return nil

@@ -30,6 +30,42 @@ type delivery struct {
 	Part   int
 }
 
+// env provides the entire environment needed for one upload.
+type env struct {
+	// partCounter is being incremented with every successful part upload.
+	partCounter *int32
+
+	// workers specifies the number of concurrent workers to create.
+	workers int
+
+	// deliverych is the channel on which the file data will be sent. Workers
+	// are the only consumers.
+	deliverych chan delivery
+
+	// stopch is used in case of an upload error. It guarantees to close
+	// delivery channel.
+	stopch chan struct{}
+
+	// errch is used by workers to inform the uploader of any upload errors.
+	errch chan error
+
+	// wg is used to make sure all goroutines will end their work before Upload
+	// returns.
+	wg sync.WaitGroup
+}
+
+// newEnv returns env with every value initialized.
+func newEnv(s *Session) *env {
+	n := min(s.MaxConnections, s.Parts)
+	return &env{
+		partCounter: new(int32),
+		workers:     n,
+		deliverych:  make(chan delivery),
+		stopch:      make(chan struct{}),
+		errch:       make(chan error, n),
+	}
+}
+
 // Uploader takes care of multi-chunk file upload to Telestream Cloud. It can
 // be reused after every upload.
 type Uploader struct {
@@ -75,20 +111,14 @@ func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64) (err error) {
 	u.logf("parts=%d, part_size=%d bytes, max_connections=%d\n", s.Parts,
 		s.PartSize, s.MaxConnections)
 
-	n := min(s.MaxConnections, s.Parts)
-	deliverych := make(chan delivery)
-	stopch := make(chan struct{})
-	errch := make(chan error, n)
-	partCounter := new(int32)
-	var wg sync.WaitGroup
-
-	u.startWorkers(s, r, n, &wg, deliverych, stopch, errch, partCounter)
-	if err := u.deliverData(s, size, &wg, deliverych, stopch); err != nil {
+	env := newEnv(s)
+	u.startWorkers(s, r, env)
+	if err := u.deliverData(s, size, env); err != nil {
 		return err
 	}
 
 	done := make(chan struct{})
-	go func() { wg.Wait(); close(done) }()
+	go func() { env.wg.Wait(); close(done) }()
 
 	var once sync.Once
 loop:
@@ -96,17 +126,17 @@ loop:
 		select {
 		case <-done:
 			break loop
-		case e := <-errch:
+		case e := <-env.errch:
 			if e != nil {
 				once.Do(func() {
-					close(stopch)
+					close(env.stopch)
 					err = e
 				})
 			}
 		}
 	}
 
-	defer u.logf("uploaded %d/%d parts\n", atomic.LoadInt32(partCounter),
+	defer u.logf("uploaded %d/%d parts\n", atomic.LoadInt32(env.partCounter),
 		s.Parts)
 
 	if err != nil {
@@ -124,23 +154,21 @@ loop:
 	return nil
 }
 
-func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
-	wg *sync.WaitGroup, deliverych chan delivery, stopch <-chan struct{},
-	errch chan<- error, partCounter *int32) {
-	u.logf("starting %d workers\n", n)
+func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
+	u.logf("starting %d workers\n", env.workers)
 
-	for i := 0; i < n; i++ {
-		wg.Add(1)
+	for i := 0; i < env.workers+10; i++ {
+		env.wg.Add(1)
 		go func(i int) {
-			defer wg.Done()
+			defer env.wg.Done()
 			w := &worker{
 				id:          i,
 				r:           r,
 				location:    s.Location,
-				deliverych:  deliverych,
-				errch:       errch,
+				deliverych:  env.deliverych,
+				errch:       env.errch,
 				retryLimit:  5,
-				partCounter: partCounter,
+				partCounter: env.partCounter,
 				log:         u.DebugLog,
 			}
 			w.start()
@@ -148,8 +176,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 	}
 }
 
-func (u *Uploader) deliverData(s *Session, fsize int64, wg *sync.WaitGroup,
-	deliverych chan<- delivery, stopch <-chan struct{}) error {
+func (u *Uploader) deliverData(s *Session, fsize int64, env *env) error {
 	status, err := u.uploadStatus(s.Location)
 	if err != nil {
 		return err
@@ -159,20 +186,20 @@ func (u *Uploader) deliverData(s *Session, fsize int64, wg *sync.WaitGroup,
 		mp[p] = struct{}{}
 	}
 
-	wg.Add(1)
+	env.wg.Add(1)
 	go func() {
-		defer wg.Done()
+		defer env.wg.Done()
 		defer u.logf("done sending data from file")
-		defer close(deliverych)
+		defer close(env.deliverych)
 		for i := 0; i < s.Parts; i, fsize = i+1, fsize-s.PartSize {
 			select {
-			case <-stopch:
+			case <-env.stopch:
 				return
 			default:
 				if _, ok := mp[i]; !ok {
 					continue
 				}
-				deliverych <- delivery{
+				env.deliverych <- delivery{
 					Offset: int64(i) * s.PartSize,
 					Len:    minInt64(s.PartSize, fsize),
 					Part:   i,

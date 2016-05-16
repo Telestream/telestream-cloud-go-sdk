@@ -16,23 +16,34 @@ import (
 	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
 
+// Status describes the object returned from the upload API. Upload Status
+// contains a slice of part numbers which are still missing.
 type Status struct {
 	MissingParts []int `json:"missing_parts"`
 }
 
+// delivery is what a worker gets from the Uploader. It describes a part of a
+// file which worker should read and send to the upload API.
 type delivery struct {
 	Offset int64
 	Len    int64
 	Part   int
 }
 
+// Uploader takes care of multi-chunk file upload to Telestream Cloud. It can
+// be reused after every upload.
 type Uploader struct {
 	cl        *client.Client
 	wg        sync.WaitGroup
 	factoryID string
-	log       *log.Logger
+
+	// DebugLog specifies an optional logger for any events which take place
+	// during the upload.
+	DebugLog *log.Logger
 }
 
+// New returns a new Uploader which will be uploading files to the given
+// factory.
 func New(cl *client.Client, factoryID string) (*Uploader, error) {
 	if cl == nil {
 		return nil, errors.New("uploader: client cannot be nil")
@@ -40,14 +51,18 @@ func New(cl *client.Client, factoryID string) (*Uploader, error) {
 	return &Uploader{
 		cl:        cl,
 		factoryID: factoryID,
-		log:       log.New(ioutil.Discard, "", 0),
 	}, nil
 }
 
+// UploadSession uploads files based on the given session. If the upload has
+// failed or has been stopped, it is possible to resume it using this method.
+// Uploading stops on the first worker error and returns it.
 func (u *Uploader) UploadSession(s *Session, r io.ReaderAt, size int64) error {
 	return u.upload(s, r, size)
 }
 
+// Upload is a short version of UploadSession. It takes care of creating
+// sessions and immediately starts the file upload.
 func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 	profiles []string) error {
 	s, err := u.NewSession(filename, size, profiles)
@@ -58,7 +73,7 @@ func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 }
 
 func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64) (err error) {
-	u.log.Printf("parts=%d, part_size=%d bytes, max_connections=%d\n", s.Parts,
+	u.logf("parts=%d, part_size=%d bytes, max_connections=%d\n", s.Parts,
 		s.PartSize, s.MaxConnections)
 
 	n := min(s.MaxConnections, s.Parts)
@@ -91,7 +106,7 @@ loop:
 		}
 	}
 
-	defer u.log.Printf("uploaded %d/%d parts\n", atomic.LoadInt32(partCounter),
+	defer u.logf("uploaded %d/%d parts\n", atomic.LoadInt32(partCounter),
 		s.Parts)
 
 	if err != nil {
@@ -109,14 +124,16 @@ loop:
 	return nil
 }
 
-func (u *Uploader) SetLogger(l *log.Logger) {
-	u.log = l
-}
-
 func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 	deliverych chan delivery, stopch chan struct{}, errch chan<- error,
 	partCounter *int32) {
-	u.log.Printf("starting %d workers\n", n)
+	u.logf("starting %d workers\n", n)
+
+	l := log.New(ioutil.Discard, "", 0)
+	if u.DebugLog != nil {
+		l = u.DebugLog
+	}
+
 	for i := 0; i < n; i++ {
 		u.wg.Add(1)
 		go func(i int) {
@@ -129,7 +146,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 				errch:       errch,
 				retryLimit:  5,
 				partCounter: partCounter,
-				log:         u.log,
+				log:         l,
 			}
 			w.start()
 		}(i)
@@ -150,7 +167,7 @@ func (u *Uploader) deliverData(s *Session, fsize int64,
 	u.wg.Add(1)
 	go func() {
 		defer u.wg.Done()
-		defer u.log.Println("done sending data from file")
+		defer u.logf("done sending data from file")
 		defer close(deliverych)
 		for i := 0; i < s.Parts; i, fsize = i+1, fsize-s.PartSize {
 			select {
@@ -191,6 +208,8 @@ func (u *Uploader) uploadStatus(location string) (*Status, error) {
 	return &status, nil
 }
 
+// NewSession creates new upload session which gives a unique resource location
+// to upload the file. These sessions are being created with multi-chunk option.
 func (u *Uploader) NewSession(fname string, fsize int64,
 	profiles []string) (*Session, error) {
 	params := url.Values{
@@ -220,6 +239,12 @@ func (u *Uploader) NewSession(fname string, fsize int64,
 	}
 	var session Session
 	return &session, json.Unmarshal(b, &session)
+}
+
+func (u *Uploader) logf(format string, args ...interface{}) {
+	if u.DebugLog != nil {
+		u.DebugLog.Printf(format, args...)
+	}
 }
 
 func min(a, b int) int {

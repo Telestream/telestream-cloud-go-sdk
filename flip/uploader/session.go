@@ -5,14 +5,28 @@ import (
 	"strconv"
 )
 
+// Session describes upload API's upload session.
 type Session struct {
-	ID             string `json:"id"`
-	Location       string `json:"location"`
-	Parts          int    `json:"parts"`
-	PartSize       int64  `json:"part_size"`
-	MaxConnections int    `json:"max_connections"`
+	// ID specifies a unique upload session ID.
+	ID string `json:"id"`
+
+	// Location specifies a unique resource location for the file upload.
+	Location string `json:"location"`
+
+	// Parts specifies the number of parts the file is supposed to be split into
+	// for uploading purposes.
+	Parts int `json:"parts"`
+
+	// PartSize specifies the size of each part. The last part can be smaller
+	// than this value.
+	PartSize int64 `json:"part_size"`
+
+	// MaxConnections specifies the maximum number of possible concurrent
+	// uploads.
+	MaxConnections int `json:"max_connections"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface.
 func (s *Session) UnmarshalJSON(b []byte) error {
 	var m map[string]string
 	if err := json.Unmarshal(b, &m); err != nil {

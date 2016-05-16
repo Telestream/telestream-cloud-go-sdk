@@ -129,11 +129,6 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 	partCounter *int32) {
 	u.logf("starting %d workers\n", n)
 
-	l := log.New(ioutil.Discard, "", 0)
-	if u.DebugLog != nil {
-		l = u.DebugLog
-	}
-
 	for i := 0; i < n; i++ {
 		u.wg.Add(1)
 		go func(i int) {
@@ -146,7 +141,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 				errch:       errch,
 				retryLimit:  5,
 				partCounter: partCounter,
-				log:         l,
+				log:         u.DebugLog,
 			}
 			w.start()
 		}(i)
@@ -243,7 +238,7 @@ func (u *Uploader) NewSession(fname string, fsize int64,
 
 func (u *Uploader) logf(format string, args ...interface{}) {
 	if u.DebugLog != nil {
-		u.DebugLog.Printf(format, args...)
+		u.DebugLog.Printf("uploader: "+format, args...)
 	}
 }
 

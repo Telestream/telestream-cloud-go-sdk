@@ -22,10 +22,10 @@ type worker struct {
 }
 
 func (w *worker) start() error {
-	w.log.Printf("worker %d: started\n", w.id)
-	defer w.log.Printf("worker %d: bye\n", w.id)
+	w.logf("started\n")
+	defer w.logf("bye\n")
 	for del := range w.deliverych {
-		w.log.Printf("worker %d: uploading part %d\n", w.id, del.Part)
+		w.logf("uploading part %d\n", del.Part)
 		if err := w.tryHandle(&del, w.retryLimit); err != nil {
 			w.errch <- err
 		}
@@ -59,16 +59,21 @@ func (w *worker) tryHandle(del *delivery, retryLimit int) (err error) {
 	for retry := 1; ; retry++ {
 		if err = w.handle(del); err != nil {
 			if retry < w.retryLimit {
-				w.log.Printf("worker %d: error while uploading part %d; %v; "+
-					"retrying %d/%d\n", w.id, del.Part, err, retry, w.retryLimit)
+				w.logf("error while uploading part %d; %v; "+
+					"retrying %d/%d\n", del.Part, err, retry, w.retryLimit)
 				time.Sleep(time.Second)
 				continue
 			} else {
-				w.log.Printf("worker %d: failed to upload part %d\n", w.id,
-					del.Part)
+				w.logf("failed to upload part %d\n", del.Part)
 				return fmt.Errorf("failed to upload part %d: %v", del.Part, err)
 			}
 		}
 		return nil
+	}
+}
+
+func (w *worker) logf(format string, args ...interface{}) {
+	if w.log != nil {
+		w.log.Printf(fmt.Sprintf("worker %d: %s", w.id, format), args...)
 	}
 }

@@ -21,7 +21,7 @@ type worker struct {
 	log         *log.Logger
 }
 
-func (w *worker) start() error {
+func (w *worker) start() {
 	w.logf("started\n")
 	defer w.logf("bye\n")
 	for del := range w.deliverych {
@@ -30,7 +30,6 @@ func (w *worker) start() error {
 			w.errch <- err
 		}
 	}
-	return nil
 }
 
 func (w *worker) handle(d *delivery) error {

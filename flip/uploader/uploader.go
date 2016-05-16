@@ -34,7 +34,6 @@ type delivery struct {
 // be reused after every upload.
 type Uploader struct {
 	cl        *client.Client
-	wg        sync.WaitGroup
 	factoryID string
 
 	// DebugLog specifies an optional logger for any events which take place
@@ -81,14 +80,15 @@ func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64) (err error) {
 	stopch := make(chan struct{})
 	errch := make(chan error, n)
 	partCounter := new(int32)
+	var wg sync.WaitGroup
 
-	u.startWorkers(s, r, n, deliverych, stopch, errch, partCounter)
-	if err := u.deliverData(s, size, deliverych, stopch); err != nil {
+	u.startWorkers(s, r, n, &wg, deliverych, stopch, errch, partCounter)
+	if err := u.deliverData(s, size, &wg, deliverych, stopch); err != nil {
 		return err
 	}
 
 	done := make(chan struct{})
-	go func() { u.wg.Wait(); close(done) }()
+	go func() { wg.Wait(); close(done) }()
 
 	var once sync.Once
 loop:
@@ -125,14 +125,14 @@ loop:
 }
 
 func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
-	deliverych chan delivery, stopch chan struct{}, errch chan<- error,
-	partCounter *int32) {
+	wg *sync.WaitGroup, deliverych chan delivery, stopch <-chan struct{},
+	errch chan<- error, partCounter *int32) {
 	u.logf("starting %d workers\n", n)
 
 	for i := 0; i < n; i++ {
-		u.wg.Add(1)
+		wg.Add(1)
 		go func(i int) {
-			defer u.wg.Done()
+			defer wg.Done()
 			w := &worker{
 				id:          i,
 				r:           r,
@@ -148,7 +148,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, n int,
 	}
 }
 
-func (u *Uploader) deliverData(s *Session, fsize int64,
+func (u *Uploader) deliverData(s *Session, fsize int64, wg *sync.WaitGroup,
 	deliverych chan<- delivery, stopch <-chan struct{}) error {
 	status, err := u.uploadStatus(s.Location)
 	if err != nil {
@@ -159,9 +159,9 @@ func (u *Uploader) deliverData(s *Session, fsize int64,
 		mp[p] = struct{}{}
 	}
 
-	u.wg.Add(1)
+	wg.Add(1)
 	go func() {
-		defer u.wg.Done()
+		defer wg.Done()
 		defer u.logf("done sending data from file")
 		defer close(deliverych)
 		for i := 0; i < s.Parts; i, fsize = i+1, fsize-s.PartSize {

@@ -17,6 +17,7 @@ type worker struct {
 	deliverych  <-chan delivery
 	errch       chan<- error
 	retryLimit  int
+	retryDelay  time.Duration
 	partCounter *int32
 	log         *log.Logger
 }
@@ -60,7 +61,7 @@ func (w *worker) tryHandle(del *delivery, retryLimit int) (err error) {
 			if retry < w.retryLimit {
 				w.logf("error while uploading part %d; %v; "+
 					"retrying %d/%d\n", del.Part, err, retry, w.retryLimit)
-				time.Sleep(time.Second)
+				time.Sleep(w.retryDelay)
 				continue
 			} else {
 				w.logf("failed to upload part %d\n", del.Part)

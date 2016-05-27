@@ -4,10 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"reflect"
 	"sort"
 	"strconv"
@@ -40,6 +38,28 @@ func newClient(host string) *client.Client {
 		},
 		HTTPClient: nil,
 	}
+}
+
+func runUploader(t *testing.T, input []byte, host string) error {
+	uploader, err := New(newClient(host), "123")
+	if err != nil {
+		t.Fatalf("expected err=nil; got %v", err)
+	}
+	uploader.retryDelay = time.Millisecond * 50
+	// uploader.DebugLog = log.New(os.Stdout, "", 0)
+
+	errch := make(chan error)
+	go func() {
+		errch <- uploader.Upload(bytes.NewReader(input), "f", 10, nil)
+	}()
+
+	select {
+	case err := <-errch:
+		return err
+	case <-time.After(time.Second * 5):
+		t.Fatalf("timeout!")
+	}
+	return nil
 }
 
 func TestUploaderSession(t *testing.T) {
@@ -130,25 +150,9 @@ func TestUploader(t *testing.T) {
 	session.Location = ts.URL + "/upload"
 	defer ts.Close()
 
-	uploader, err := New(newClient(stripHTTP(ts.URL)), "123")
-	if err != nil {
-		t.Fatalf("expected err=nil; got %v", err)
-	}
-	uploader.DebugLog = log.New(os.Stdout, "", 0)
-
 	input := "0123456789"
-
-	errch := make(chan error)
-	go func() {
-		errch <- uploader.Upload(bytes.NewReader([]byte(input)), "f", 10, nil)
-	}()
-	select {
-	case err := <-errch:
-		if err != nil {
-			t.Fatalf("expected err=nil; got %v", err)
-		}
-	case <-time.After(time.Second * 5):
-		t.Fatalf("timeout!")
+	if err := runUploader(t, []byte(input), stripHTTP(ts.URL)); err != nil {
+		t.Fatalf("expected err=nil; got %v", err)
 	}
 
 	if l := len(serverData.data); l != session.Parts {
@@ -157,5 +161,75 @@ func TestUploader(t *testing.T) {
 	sort.Strings(serverData.data)
 	if out := strings.Join(serverData.data, ""); !reflect.DeepEqual(input, out) {
 		t.Errorf("expected %v; got %v", input, out)
+	}
+}
+
+// uploader should retry every request few times in case of fail.
+func TestUploaderFail(t *testing.T) {
+	session := &Session{
+		Parts:          4,
+		MaxConnections: 2,
+		PartSize:       1,
+	}
+	serverData := struct {
+		sync.Mutex
+		partRequestCounter map[int]int
+		partsStatusMap     map[int]bool
+	}{
+		partRequestCounter: make(map[int]int),
+		partsStatusMap: map[int]bool{
+			0: true,
+			1: true,
+			2: false,
+			3: true,
+		},
+	}
+
+	ts := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			defer r.Body.Close()
+			switch {
+			case r.URL.Path == "/v3.0/videos/upload.json" &&
+				r.Method == "POST":
+				w.Write(mustMarshal(session))
+				return
+			case r.URL.Path == "/upload":
+				switch r.Method {
+				case "GET":
+					var parts = []int{0, 1, 2, 3}
+					w.Write(mustMarshal(&Status{parts}))
+					return
+				case "PUT":
+					part, err := strconv.Atoi(r.Header.Get("X-Part"))
+					if err != nil {
+						http.Error(w, err.Error(), 500)
+						return
+					}
+					serverData.Lock()
+					serverData.partRequestCounter[part]++
+					serverData.Unlock()
+					if !serverData.partsStatusMap[part] {
+						http.Error(w, "error", 500)
+					}
+					return
+				}
+			}
+			http.Error(w, "not found", 404)
+		}))
+	session.Location = ts.URL + "/upload"
+	defer ts.Close()
+
+	if err := runUploader(t, []byte("0123"), stripHTTP(ts.URL)); err == nil {
+		t.Fatal("expected err!=nil")
+	}
+
+	expected := map[int]int{
+		0: 1,
+		1: 1,
+		2: 5,
+		3: 1,
+	}
+	if !reflect.DeepEqual(expected, serverData.partRequestCounter) {
+		t.Errorf("expected %v, got %v", expected, serverData.partRequestCounter)
 	}
 }

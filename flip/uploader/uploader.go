@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
@@ -69,8 +70,9 @@ func newEnv(s *Session) *env {
 // Uploader takes care of multi-chunk file upload to Telestream Cloud. It can
 // be reused after every upload.
 type Uploader struct {
-	cl        *client.Client
-	factoryID string
+	cl         *client.Client
+	factoryID  string
+	retryDelay time.Duration
 
 	// DebugLog specifies an optional logger for any events which take place
 	// during the upload.
@@ -84,8 +86,9 @@ func New(cl *client.Client, factoryID string) (*Uploader, error) {
 		return nil, errors.New("uploader: client cannot be nil")
 	}
 	return &Uploader{
-		cl:        cl,
-		factoryID: factoryID,
+		cl:         cl,
+		factoryID:  factoryID,
+		retryDelay: time.Second,
 	}, nil
 }
 
@@ -168,6 +171,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
 				deliverych:  env.deliverych,
 				errch:       env.errch,
 				retryLimit:  5,
+				retryDelay:  u.retryDelay,
 				partCounter: env.partCounter,
 				log:         u.DebugLog,
 			}

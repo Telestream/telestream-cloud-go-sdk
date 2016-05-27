@@ -26,7 +26,8 @@ type Session struct {
 	MaxConnections int `json:"max_connections"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface.
+// UnmarshalJSON implements the json.Unmarshaler interface. Telestream Cloud's
+// API returns every value as string.
 func (s *Session) UnmarshalJSON(b []byte) error {
 	var m map[string]string
 	if err := json.Unmarshal(b, &m); err != nil {
@@ -50,4 +51,16 @@ func (s *Session) UnmarshalJSON(b []byte) error {
 	s.PartSize = partSize
 	s.MaxConnections = maxConnections
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaler interface. Telestream Cloud's API
+// returns every value as string.
+func (s *Session) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]string{
+		"id":              s.ID,
+		"location":        s.Location,
+		"parts":           strconv.Itoa(s.Parts),
+		"part_size":       strconv.FormatInt(s.PartSize, 10),
+		"max_connections": strconv.Itoa(s.MaxConnections),
+	})
 }

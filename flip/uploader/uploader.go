@@ -157,7 +157,7 @@ loop:
 func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
 	u.logf("starting %d workers\n", env.workers)
 
-	for i := 0; i < env.workers+10; i++ {
+	for i := 0; i < env.workers; i++ {
 		env.wg.Add(1)
 		go func(i int) {
 			defer env.wg.Done()
@@ -235,10 +235,11 @@ func (u *Uploader) uploadStatus(location string) (*Status, error) {
 func (u *Uploader) NewSession(fname string, fsize int64,
 	profiles []string) (*Session, error) {
 	params := url.Values{
-		"cloud_id":  {u.factoryID},
-		"file_size": {strconv.FormatInt(fsize, 10)},
-		"file_name": {fname},
-		"profiles":  profiles,
+		"cloud_id":    {u.factoryID},
+		"file_size":   {strconv.FormatInt(fsize, 10)},
+		"file_name":   {fname},
+		"profiles":    profiles,
+		"multi_chunk": {"1"},
 	}
 	u.cl.SignParams("POST", "/videos/upload.json", params)
 	req, err := http.NewRequest("POST",
@@ -246,7 +247,6 @@ func (u *Uploader) NewSession(fname string, fsize int64,
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("X-Multi-Chunk", "1")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err

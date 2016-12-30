@@ -173,6 +173,7 @@ type Encoding struct {
 	VideoCodec        string   `json:"video_codec,omitempty" url:"video_codec,omitempty"`
 	VideoID           string   `json:"video_id,omitempty" url:"video_id,omitempty"`
 	Width             int      `json:"width,omitempty" url:"width,omitempty"`
+	Screenshots       []string `json:"screenshots,omitempty" url:"screenshots,omitempty"`
 }
 
 // DeletePath returns an api path on which delete encoding request must be send.
@@ -356,6 +357,8 @@ type EncodingRequest struct {
 	Status Status `json:"status,omitempty" url:"status,omitempty"`
 	// VideoID can be used as a filter by videos's name.
 	VideoID string `json:"video_id,omitempty" url:"video_id,omitempty"`
+	// Screenshots can be used to show screenshots
+	Screenshots bool `json:"screenshots,omitempty" url:"screenshots,omitempty"`
 }
 
 // NewEncodingRequest defines desired settings while creating a new encoding.

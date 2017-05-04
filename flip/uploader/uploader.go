@@ -1,6 +1,8 @@
 package uploader
 
 import (
+	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -29,6 +32,7 @@ type delivery struct {
 	Offset int64
 	Len    int64
 	Part   int
+	Tag    string
 }
 
 // env provides the entire environment needed for one upload.
@@ -95,28 +99,49 @@ func New(cl *client.Client, factoryID string) (*Uploader, error) {
 // UploadSession uploads files based on the given session. If the upload has
 // failed or has been stopped, it is possible to resume it using this method.
 // Uploading stops on the first worker error and returns it.
-func (u *Uploader) UploadSession(s *Session, r io.ReaderAt, size int64) error {
-	return u.upload(s, r, size)
+func (u *Uploader) UploadSession(s *Session, r io.ReaderAt, size int64, extra_files *ExtraFileInfo) error {
+	err := u.upload(s, r, size, "")
+	if err != nil {
+		return err
+	}
+
+	err = u.uploadExtraFiles(s, extra_files)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // Upload is a short version of UploadSession. It takes care of creating
 // sessions and immediately starts the file upload.
 func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
-	profiles []string) error {
-	s, err := u.NewSession(filename, size, profiles)
+	profiles []string, extra_files *ExtraFileInfo) error {
+	s, err := u.NewSession(filename, size, profiles, extra_files)
 	if err != nil {
 		return err
 	}
-	return u.upload(s, r, size)
+
+	u.upload(s, r, size, "")
+	if err != nil {
+		return err
+	}
+
+	err = u.uploadExtraFiles(s, extra_files)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64) (err error) {
-	u.logf("parts=%d, part_size=%d bytes, max_connections=%d\n", s.Parts,
-		s.PartSize, s.MaxConnections)
+func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64, tag string) (err error) {
+	u.logf("parts=%d, part_size=%d bytes, max_connections=%d, tag=%s\n", s.Parts,
+		s.PartSize, s.MaxConnections, tag)
 
 	env := newEnv(s)
 	u.startWorkers(s, r, env)
-	if err := u.deliverData(s, size, env); err != nil {
+	if err := u.deliverData(s, size, env, tag); err != nil {
 		return err
 	}
 
@@ -146,7 +171,7 @@ loop:
 		return err
 	}
 
-	status, err := u.uploadStatus(s.Location)
+	status, err := u.uploadStatus(s.Location, tag)
 	if err != nil {
 		return err
 	}
@@ -154,6 +179,33 @@ loop:
 		return fmt.Errorf("some parts failed to be uploaded %v",
 			status.MissingParts)
 	}
+	return nil
+}
+
+func (u *Uploader) uploadExtraFiles(s *Session, extra_files *ExtraFileInfo) error {
+	for _, tag := range *extra_files {
+		for i, name := range tag.Files {
+			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)
+
+			fh, err := os.Open(name)
+			if err != nil {
+				return err
+			}
+
+			st, err := os.Stat(name)
+			if err != nil {
+				return err
+			}
+			sess := Session{
+				Location:       s.Location,
+				Parts:          s.ExtraFiles[key].Parts,
+				PartSize:       s.ExtraFiles[key].PartSize,
+				MaxConnections: s.MaxConnections,
+			}
+			u.upload(&sess, fh, st.Size(), key)
+		}
+	}
+
 	return nil
 }
 
@@ -180,8 +232,8 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
 	}
 }
 
-func (u *Uploader) deliverData(s *Session, fsize int64, env *env) error {
-	status, err := u.uploadStatus(s.Location)
+func (u *Uploader) deliverData(s *Session, fsize int64, env *env, tag string) error {
+	status, err := u.uploadStatus(s.Location, tag)
 	if err != nil {
 		return err
 	}
@@ -207,6 +259,7 @@ func (u *Uploader) deliverData(s *Session, fsize int64, env *env) error {
 					Offset: int64(i) * s.PartSize,
 					Len:    minInt64(s.PartSize, fsize),
 					Part:   i,
+					Tag:    tag,
 				}
 			}
 		}
@@ -214,8 +267,14 @@ func (u *Uploader) deliverData(s *Session, fsize int64, env *env) error {
 	return nil
 }
 
-func (u *Uploader) uploadStatus(location string) (*Status, error) {
-	resp, err := http.Get(location)
+func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
+	req, err := http.NewRequest("GET", location, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("X-Extra-File-Tag", tag)
+	resp, err := (&http.Client{}).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -237,20 +296,29 @@ func (u *Uploader) uploadStatus(location string) (*Status, error) {
 // NewSession creates new upload session which gives a unique resource location
 // to upload the file. These sessions are being created with multi-chunk option.
 func (u *Uploader) NewSession(fname string, fsize int64,
-	profiles []string) (*Session, error) {
-	params := url.Values{
-		"cloud_id":    {u.factoryID},
-		"file_size":   {strconv.FormatInt(fsize, 10)},
-		"file_name":   {fname},
+	profiles []string, extra_files *ExtraFileInfo) (*Session, error) {
+	body, _ := json.Marshal(map[string]interface{}{
+		"file_size":   strconv.FormatInt(fsize, 10),
+		"file_name":   fname,
 		"profiles":    profiles,
-		"multi_chunk": {"1"},
+		"multi_chunk": "true",
+		"extra_files": extra_files,
+	})
+	h := sha256.Sum256(body)
+
+	params := url.Values{
+		"signature_version": {"2"},
+		"checksum":          {fmt.Sprintf("%x", h)},
+		"cloud_id":          {u.factoryID},
 	}
 	u.cl.SignParams("POST", "/videos/upload.json", params)
 	req, err := http.NewRequest("POST",
-		"http://"+u.cl.Host+"/v3.0/videos/upload.json?"+params.Encode(), nil)
+		"http://"+u.cl.Host+"/v3.0/videos/upload.json?"+params.Encode(),
+		ioutil.NopCloser(bytes.NewReader(body)))
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err

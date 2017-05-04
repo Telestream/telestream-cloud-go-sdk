@@ -41,6 +41,7 @@ func (w *worker) handle(d *delivery) error {
 	}
 	req.Header.Set("Content-Type", "application/octet-stream")
 	req.Header.Set("X-Part", strconv.Itoa(d.Part))
+	req.Header.Set("X-Extra-File-Tag", d.Tag)
 	req.ContentLength = d.Len
 
 	resp, err := http.DefaultClient.Do(req)

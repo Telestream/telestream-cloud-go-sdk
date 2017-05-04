@@ -2,6 +2,8 @@ package uploader
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
 	"strconv"
 )
 
@@ -15,42 +17,55 @@ type Session struct {
 
 	// Parts specifies the number of parts the file is supposed to be split into
 	// for uploading purposes.
-	Parts int `json:"parts"`
+	Parts int `json:"parts,string"`
 
 	// PartSize specifies the size of each part. The last part can be smaller
 	// than this value.
-	PartSize int64 `json:"part_size"`
+	PartSize int64 `json:"part_size,string"`
 
 	// MaxConnections specifies the maximum number of possible concurrent
 	// uploads.
-	MaxConnections int `json:"max_connections"`
+	MaxConnections int `json:"max_connections,string"`
+
+	ExtraFiles map[string]extra_files `json:"extra_files"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface. Telestream Cloud's
-// API returns every value as string.
-func (s *Session) UnmarshalJSON(b []byte) error {
-	var m map[string]string
-	if err := json.Unmarshal(b, &m); err != nil {
-		return err
+type extra_files struct {
+	// Parts specifies the number of parts the file is supposed to be split into
+	// for uploading purposes.
+	Parts int `json:"parts,string"`
+
+	// PartSize specifies the size of each part. The last part can be smaller
+	// than this value.
+	PartSize int64 `json:"part_size,string"`
+}
+
+type ExtraFileInfo []struct {
+	Tag   string
+	Files []string
+}
+
+func (self *ExtraFileInfo) MarshalJSON() ([]byte, error) {
+	data := make([]map[string]interface{}, 0)
+
+	for _, tag := range *self {
+		for i, name := range tag.Files {
+			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)
+			st, err := os.Stat(name)
+
+			if err != nil {
+				return nil, err
+			}
+
+			data = append(data, map[string]interface{}{
+				"tag":       key,
+				"file_name": name,
+				"file_size": st.Size(),
+			})
+		}
 	}
-	partSize, err := strconv.ParseInt(m["part_size"], 10, 64)
-	if err != nil {
-		return err
-	}
-	parts, err := strconv.Atoi(m["parts"])
-	if err != nil {
-		return err
-	}
-	maxConnections, err := strconv.Atoi(m["max_connections"])
-	if err != nil {
-		return err
-	}
-	s.ID = m["id"]
-	s.Location = m["location"]
-	s.Parts = parts
-	s.PartSize = partSize
-	s.MaxConnections = maxConnections
-	return nil
+
+	return json.Marshal(data)
 }
 
 // MarshalJSON implements the json.Marshaler interface. Telestream Cloud's API

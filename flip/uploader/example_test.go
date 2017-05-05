@@ -41,7 +41,7 @@ func ExampleUploader_Upload() {
 	// u.DebugLog = log.New(os.Stdout, "", log.LstdFlags)
 	//
 
-	if err := u.Upload(f, fi.Name(), fi.Size(), profiles); err != nil {
+	if err := u.Upload(f, fi.Name(), fi.Size(), profiles, nil); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
@@ -75,13 +75,13 @@ func ExampleUploader_UploadSession() {
 
 	profiles := []string{"h264"}
 
-	s, err := u.NewSession(fi.Name(), fi.Size(), profiles)
+	s, err := u.NewSession(fi.Name(), fi.Size(), profiles, nil)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	if err := u.UploadSession(s, f, fi.Size()); err != nil {
+	if err := u.UploadSession(s, f, fi.Size(), nil); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

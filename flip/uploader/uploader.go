@@ -122,7 +122,7 @@ func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 		return err
 	}
 
-	u.upload(s, r, size, "")
+	err = u.upload(s, r, size, "")
 	if err != nil {
 		return err
 	}
@@ -183,6 +183,10 @@ loop:
 }
 
 func (u *Uploader) uploadExtraFiles(s *Session, extra_files *ExtraFileInfo) error {
+	if extra_files == nil {
+		return nil
+	}
+
 	for _, tag := range *extra_files {
 		for i, name := range tag.Files {
 			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)

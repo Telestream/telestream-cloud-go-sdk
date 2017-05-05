@@ -50,7 +50,7 @@ func runUploader(t *testing.T, input []byte, host string) error {
 
 	errch := make(chan error)
 	go func() {
-		errch <- uploader.Upload(bytes.NewReader(input), "f", 10, nil)
+		errch <- uploader.Upload(bytes.NewReader(input), "f", 10, nil, nil)
 	}()
 
 	select {
@@ -82,7 +82,7 @@ func TestUploaderSession(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected err=nil; got %v", err)
 	}
-	session, err := uploader.NewSession("fname", 10, []string{"h264"})
+	session, err := uploader.NewSession("fname", 10, []string{"h264"}, nil)
 	if err != nil {
 		t.Fatalf("expected err=nil; got %v", err)
 	}

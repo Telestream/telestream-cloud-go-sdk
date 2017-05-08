@@ -3,7 +3,7 @@ package uploader
 import (
 	"encoding/json"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 )
 
@@ -27,10 +27,10 @@ type Session struct {
 	// uploads.
 	MaxConnections int `json:"max_connections,string"`
 
-	ExtraFiles map[string]extra_files `json:"extra_files"`
+	ExtraFiles map[string]ExtraFiles `json:"extra_files"`
 }
 
-type extra_files struct {
+type ExtraFiles struct {
 	// Parts specifies the number of parts the file is supposed to be split into
 	// for uploading purposes.
 	Parts int `json:"parts,string"`
@@ -42,25 +42,25 @@ type extra_files struct {
 
 type ExtraFileInfo []struct {
 	Tag   string
-	Files []string
+	Files []ExtraFileItem
 }
 
-func (self *ExtraFileInfo) MarshalJSON() ([]byte, error) {
+type ExtraFileItem struct {
+	Name string
+	File io.ReaderAt
+	Size int64
+}
+
+func (self ExtraFileInfo) MarshalJSON() ([]byte, error) {
 	data := make([]map[string]interface{}, 0)
 
-	for _, tag := range *self {
-		for i, name := range tag.Files {
+	for _, tag := range self {
+		for i, file := range tag.Files {
 			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)
-			st, err := os.Stat(name)
-
-			if err != nil {
-				return nil, err
-			}
-
 			data = append(data, map[string]interface{}{
 				"tag":       key,
-				"file_name": name,
-				"file_size": st.Size(),
+				"file_name": file.Name,
+				"file_size": file.Size,
 			})
 		}
 	}

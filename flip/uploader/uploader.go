@@ -11,7 +11,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -188,25 +187,16 @@ func (u *Uploader) uploadExtraFiles(s *Session, extra_files *ExtraFileInfo) erro
 	}
 
 	for _, tag := range *extra_files {
-		for i, name := range tag.Files {
+		for i, file := range tag.Files {
 			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)
 
-			fh, err := os.Open(name)
-			if err != nil {
-				return err
-			}
-
-			st, err := os.Stat(name)
-			if err != nil {
-				return err
-			}
 			sess := Session{
 				Location:       s.Location,
 				Parts:          s.ExtraFiles[key].Parts,
 				PartSize:       s.ExtraFiles[key].PartSize,
 				MaxConnections: s.MaxConnections,
 			}
-			u.upload(&sess, fh, st.Size(), key)
+			u.upload(&sess, file.File, file.Size, key)
 		}
 	}
 

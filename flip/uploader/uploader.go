@@ -268,7 +268,7 @@ func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
 	}
 
 	req.Header.Add("X-Extra-File-Tag", tag)
-	resp, err := (&http.Client{}).Do(req)
+	resp, err := (http.DefaultClient).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -291,13 +291,18 @@ func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
 // to upload the file. These sessions are being created with multi-chunk option.
 func (u *Uploader) NewSession(fname string, fsize int64,
 	profiles []string, extra_files *ExtraFileInfo) (*Session, error) {
-	body, _ := json.Marshal(map[string]interface{}{
+	body, err := json.Marshal(map[string]interface{}{
 		"file_size":   strconv.FormatInt(fsize, 10),
 		"file_name":   fname,
 		"profiles":    profiles,
 		"multi_chunk": "true",
 		"extra_files": extra_files,
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
 	h := sha256.Sum256(body)
 
 	params := url.Values{

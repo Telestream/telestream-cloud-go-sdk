@@ -38,7 +38,7 @@ type Configuration struct {
 
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
-		BasePath:      "http://localhost:5555/api/flip/3.1",
+		BasePath:      "https://api.cloud.telestream.net/api/flip/3.1",
 		DefaultHeader: make(map[string]string),
 		APIKey:        make(map[string]string),
 		APIKeyPrefix:  make(map[string]string),

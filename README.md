@@ -17,7 +17,7 @@ Put the package under your project folder and add the following in import:
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost:5555/api/flip/3.1*
+All URIs are relative to *https://api.cloud.telestream.net/api/flip/3.1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

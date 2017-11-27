@@ -1,8 +1,6 @@
 package uploader
 
 import (
-	"bytes"
-	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -10,13 +8,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
-	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
 
-	"github.com/Telestream/telestream-cloud-go-sdk/client"
+	"github.com/Telestream/telestream-cloud-go-sdk/flip"
+	"strconv"
 )
 
 // Status describes the object returned from the upload API. Upload Status
@@ -59,8 +56,8 @@ type env struct {
 }
 
 // newEnv returns env with every value initialized.
-func newEnv(s *Session) *env {
-	n := min(s.MaxConnections, s.Parts)
+func newEnv(s *flip.UploadSession) *env {
+	n := min(int(s.MaxConnections), int(s.Parts))
 	return &env{
 		partCounter: new(int32),
 		workers:     n,
@@ -73,7 +70,7 @@ func newEnv(s *Session) *env {
 // Uploader takes care of multi-chunk file upload to Telestream Cloud. It can
 // be reused after every upload.
 type Uploader struct {
-	cl         *client.Client
+	cl         *flip.FlipApi
 	factoryID  string
 	retryDelay time.Duration
 
@@ -84,7 +81,7 @@ type Uploader struct {
 
 // New returns a new Uploader which will be uploading files to the given
 // factory.
-func New(cl *client.Client, factoryID string) (*Uploader, error) {
+func New(cl *flip.FlipApi, factoryID string) (*Uploader, error) {
 	if cl == nil {
 		return nil, errors.New("uploader: client cannot be nil")
 	}
@@ -95,16 +92,16 @@ func New(cl *client.Client, factoryID string) (*Uploader, error) {
 	}, nil
 }
 
-// UploadSession uploads files based on the given session. If the upload has
+// flip.UploadSession uploads files based on the given flip.UploadSession. If the upload has
 // failed or has been stopped, it is possible to resume it using this method.
 // Uploading stops on the first worker error and returns it.
-func (u *Uploader) UploadSession(s *Session, r io.ReaderAt, size int64, extra_files *ExtraFileInfo) error {
+func (u *Uploader) UploadSession(s *flip.UploadSession, r io.ReaderAt, size int64, extraFiles *ExtraFilesInfo) error {
 	err := u.upload(s, r, size, "")
 	if err != nil {
 		return err
 	}
 
-	err = u.uploadExtraFiles(s, extra_files)
+	err = u.uploadExtraFiles(s, extraFiles)
 	if err != nil {
 		return err
 	}
@@ -112,29 +109,36 @@ func (u *Uploader) UploadSession(s *Session, r io.ReaderAt, size int64, extra_fi
 	return nil
 }
 
-// Upload is a short version of UploadSession. It takes care of creating
-// sessions and immediately starts the file upload.
+// Upload is a short version of flip.UploadSession. It takes care of creating
+// flip.UploadSessions and immediately starts the file upload.
 func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
-	profiles []string, extra_files *ExtraFileInfo) error {
-	s, err := u.NewSession(filename, size, profiles, extra_files)
+	profiles string, extraFilesInfo *ExtraFilesInfo) error {
+	var extraFiles []flip.ExtraFile
+	if extraFilesInfo != nil {
+		extraFiles = extraFilesInfo.ConvertToExtraFiles()
+	}
+	s, err := u.NewUploadSession(filename, size, profiles, extraFiles)
 	if err != nil {
+		fmt.Println("Failed to create a new session.")
 		return err
 	}
 
 	err = u.upload(s, r, size, "")
 	if err != nil {
+		fmt.Println("Failed to upload the input file.")
 		return err
 	}
 
-	err = u.uploadExtraFiles(s, extra_files)
+	err = u.uploadExtraFiles(s, extraFilesInfo)
 	if err != nil {
+		fmt.Println("Failed to upload extra files.")
 		return err
 	}
 
 	return nil
 }
 
-func (u *Uploader) upload(s *Session, r io.ReaderAt, size int64, tag string) (err error) {
+func (u *Uploader) upload(s *flip.UploadSession, r io.ReaderAt, size int64, tag string) (err error) {
 	u.logf("parts=%d, part_size=%d bytes, max_connections=%d, tag=%s\n", s.Parts,
 		s.PartSize, s.MaxConnections, tag)
 
@@ -181,29 +185,38 @@ loop:
 	return nil
 }
 
-func (u *Uploader) uploadExtraFiles(s *Session, extra_files *ExtraFileInfo) error {
-	if extra_files == nil {
+func (u *Uploader) uploadExtraFiles(s *flip.UploadSession, extraFiles *ExtraFilesInfo) error {
+	if extraFiles == nil {
 		return nil
 	}
+	extraFilesResponse := s.ExtraFiles.(map[string]interface{})
 
-	for _, tag := range *extra_files {
+	for _, tag := range *extraFiles {
 		for i, file := range tag.Files {
 			key := fmt.Sprintf("%s.index-%d", tag.Tag, i)
-
-			sess := Session{
+			efr := extraFilesResponse[key].(map[string]interface{})
+			parts, err := strconv.ParseInt(efr["parts"].(string), 10, 32)
+			if err != nil {
+				return err
+			}
+			partSize, err := strconv.ParseInt(efr["part_size"].(string), 10, 32)
+			if err != nil {
+				return err
+			}
+			session := flip.UploadSession{
 				Location:       s.Location,
-				Parts:          s.ExtraFiles[key].Parts,
-				PartSize:       s.ExtraFiles[key].PartSize,
+				Parts: int32(parts),
+				PartSize: int32(partSize),
 				MaxConnections: s.MaxConnections,
 			}
-			u.upload(&sess, file.File, file.Size, key)
+			u.upload(&session, file.File, file.Size, key)
 		}
 	}
 
 	return nil
 }
 
-func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
+func (u *Uploader) startWorkers(s *flip.UploadSession, r io.ReaderAt, env *env) {
 	u.logf("starting %d workers\n", env.workers)
 
 	for i := 0; i < env.workers; i++ {
@@ -226,7 +239,7 @@ func (u *Uploader) startWorkers(s *Session, r io.ReaderAt, env *env) {
 	}
 }
 
-func (u *Uploader) deliverData(s *Session, fsize int64, env *env, tag string) error {
+func (u *Uploader) deliverData(s *flip.UploadSession, fsize int64, env *env, tag string) error {
 	status, err := u.uploadStatus(s.Location, tag)
 	if err != nil {
 		return err
@@ -241,7 +254,7 @@ func (u *Uploader) deliverData(s *Session, fsize int64, env *env, tag string) er
 		defer env.wg.Done()
 		defer u.logf("done sending data from file")
 		defer close(env.deliverych)
-		for i := 0; i < s.Parts; i, fsize = i+1, fsize-s.PartSize {
+		for i := 0; i < int(s.Parts); i, fsize = i+1, fsize-int64(s.PartSize) {
 			select {
 			case <-env.stopch:
 				return
@@ -250,8 +263,8 @@ func (u *Uploader) deliverData(s *Session, fsize int64, env *env, tag string) er
 					continue
 				}
 				env.deliverych <- delivery{
-					Offset: int64(i) * s.PartSize,
-					Len:    minInt64(s.PartSize, fsize),
+					Offset: int64(i) * int64(s.PartSize),
+					Len:    minInt64(int64(s.PartSize), fsize),
 					Part:   i,
 					Tag:    tag,
 				}
@@ -287,51 +300,25 @@ func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
 	return &status, nil
 }
 
-// NewSession creates new upload session which gives a unique resource location
-// to upload the file. These sessions are being created with multi-chunk option.
-func (u *Uploader) NewSession(fname string, fsize int64,
-	profiles []string, extra_files *ExtraFileInfo) (*Session, error) {
-	body, err := json.Marshal(map[string]interface{}{
-		"file_size":   strconv.FormatInt(fsize, 10),
-		"file_name":   fname,
-		"profiles":    profiles,
-		"multi_chunk": "true",
-		"extra_files": extra_files,
-	})
+// Newflip.UploadSession creates new upload flip.UploadSession which gives a unique resource location
+// to upload the file. These flip.UploadSessions are being created with multi-chunk option.
+func (u *Uploader) NewUploadSession(fname string, fsize int64,
+	profiles string, extraFiles []flip.ExtraFile) (*flip.UploadSession, error) {
+	body := flip.VideoUploadBody{
+		FileSize:   fsize,
+		FileName:   fname,
+		Profiles:   profiles,
+		MultiChunk: true,
+		ExtraFiles: extraFiles,
+	}
+
+	session, _, err := u.cl.UploadVideo(u.factoryID, body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	h := sha256.Sum256(body)
-
-	params := url.Values{
-		"signature_version": {"2"},
-		"checksum":          {fmt.Sprintf("%x", h)},
-		"cloud_id":          {u.factoryID},
-	}
-	u.cl.SignParams("POST", "/videos/upload.json", params)
-	req, err := http.NewRequest("POST",
-		"http://"+u.cl.Host+"/v3.0/videos/upload.json?"+params.Encode(),
-		ioutil.NopCloser(bytes.NewReader(body)))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Add("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("status code: %d", resp.StatusCode)
-	}
-	defer resp.Body.Close()
-	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	var session Session
-	return &session, json.Unmarshal(b, &session)
+	return session, nil
 }
 
 func (u *Uploader) logf(format string, args ...interface{}) {

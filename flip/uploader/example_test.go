@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Telestream/telestream-cloud-go-sdk/client"
 	"github.com/Telestream/telestream-cloud-go-sdk/flip/uploader"
 )
 

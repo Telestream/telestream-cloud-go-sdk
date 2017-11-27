@@ -13,8 +13,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-
-	"github.com/Telestream/telestream-cloud-go-sdk/client"
 )
 
 func mustMarshal(v interface{}) []byte {
@@ -70,7 +68,7 @@ func TestUploaderSession(t *testing.T) {
 	}
 	ts := httptest.NewServer(http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path == "/v3.0/videos/upload.json" && r.Method == "POST" {
+			if r.URL.Path == "/api/v3.1/videos/upload.json" && r.Method == "POST" {
 				w.Write(mustMarshal(expected))
 				return
 			}
@@ -111,7 +109,7 @@ func TestUploader(t *testing.T) {
 		func(w http.ResponseWriter, r *http.Request) {
 			defer r.Body.Close()
 			switch {
-			case r.URL.Path == "/v3.0/videos/upload.json" &&
+			case r.URL.Path == "/api/v3.1/videos/upload.json" &&
 				r.Method == "POST":
 				w.Write(mustMarshal(session))
 				return

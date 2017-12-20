@@ -12,8 +12,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Telestream/telestream-cloud-go-sdk/flip"
 	"strconv"
+
+	sdk "github.com/Telestream/telestream-cloud-go-sdk/flip"
 )
 
 // Status describes the object returned from the upload API. Upload Status
@@ -53,10 +54,13 @@ type env struct {
 	// wg is used to make sure all goroutines will end their work before Upload
 	// returns.
 	wg sync.WaitGroup
+
+	// mediaIdch is used to fetch a system id of an uploaded file from workers
+	mediaIdch chan string
 }
 
 // newEnv returns env with every value initialized.
-func newEnv(s *flip.UploadSession) *env {
+func newEnv(s *sdk.UploadSession) *env {
 	n := min(int(s.MaxConnections), int(s.Parts))
 	return &env{
 		partCounter: new(int32),
@@ -64,24 +68,30 @@ func newEnv(s *flip.UploadSession) *env {
 		deliverych:  make(chan delivery),
 		stopch:      make(chan struct{}),
 		errch:       make(chan error, n),
+		mediaIdch:   make(chan string, 1),
 	}
 }
 
 // Uploader takes care of multi-chunk file upload to Telestream Cloud. It can
 // be reused after every upload.
 type Uploader struct {
-	cl         *flip.FlipApi
+	cl         videoUploader
 	factoryID  string
 	retryDelay time.Duration
 
 	// DebugLog specifies an optional logger for any events which take place
 	// during the upload.
 	DebugLog *log.Logger
+	MediaID  string
+}
+
+type videoUploader interface {
+	UploadVideo(string, sdk.VideoUploadBody) (*sdk.UploadSession, *sdk.APIResponse, error)
 }
 
 // New returns a new Uploader which will be uploading files to the given
 // factory.
-func New(cl *flip.FlipApi, factoryID string) (*Uploader, error) {
+func New(cl videoUploader, factoryID string) (*Uploader, error) {
 	if cl == nil {
 		return nil, errors.New("uploader: client cannot be nil")
 	}
@@ -92,10 +102,10 @@ func New(cl *flip.FlipApi, factoryID string) (*Uploader, error) {
 	}, nil
 }
 
-// flip.UploadSession uploads files based on the given flip.UploadSession. If the upload has
+// UploadSession uploads files based on the given sdk.UploadSession. If the upload has
 // failed or has been stopped, it is possible to resume it using this method.
 // Uploading stops on the first worker error and returns it.
-func (u *Uploader) UploadSession(s *flip.UploadSession, r io.ReaderAt, size int64, extraFiles *ExtraFilesInfo) error {
+func (u *Uploader) UploadSession(s *sdk.UploadSession, r io.ReaderAt, size int64, extraFiles *ExtraFilesInfo) error {
 	err := u.upload(s, r, size, "")
 	if err != nil {
 		return err
@@ -109,11 +119,11 @@ func (u *Uploader) UploadSession(s *flip.UploadSession, r io.ReaderAt, size int6
 	return nil
 }
 
-// Upload is a short version of flip.UploadSession. It takes care of creating
-// flip.UploadSessions and immediately starts the file upload.
+// Upload is a short version of UploadSession. It takes care of creating
+// UploadSessions and immediately starts the file upload.
 func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 	profiles string, extraFilesInfo *ExtraFilesInfo) error {
-	var extraFiles []flip.ExtraFile
+	var extraFiles []sdk.ExtraFile
 	if extraFilesInfo != nil {
 		extraFiles = extraFilesInfo.ConvertToExtraFiles()
 	}
@@ -138,7 +148,7 @@ func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 	return nil
 }
 
-func (u *Uploader) upload(s *flip.UploadSession, r io.ReaderAt, size int64, tag string) (err error) {
+func (u *Uploader) upload(s *sdk.UploadSession, r io.ReaderAt, size int64, tag string) (err error) {
 	u.logf("parts=%d, part_size=%d bytes, max_connections=%d, tag=%s\n", s.Parts,
 		s.PartSize, s.MaxConnections, tag)
 
@@ -182,10 +192,15 @@ loop:
 		return fmt.Errorf("some parts failed to be uploaded %v",
 			status.MissingParts)
 	}
+	select {
+	case u.MediaID = <-env.mediaIdch:
+	default:
+	}
+
 	return nil
 }
 
-func (u *Uploader) uploadExtraFiles(s *flip.UploadSession, extraFiles *ExtraFilesInfo) error {
+func (u *Uploader) uploadExtraFiles(s *sdk.UploadSession, extraFiles *ExtraFilesInfo) error {
 	if extraFiles == nil {
 		return nil
 	}
@@ -203,10 +218,10 @@ func (u *Uploader) uploadExtraFiles(s *flip.UploadSession, extraFiles *ExtraFile
 			if err != nil {
 				return err
 			}
-			session := flip.UploadSession{
+			session := sdk.UploadSession{
 				Location:       s.Location,
-				Parts: int32(parts),
-				PartSize: int32(partSize),
+				Parts:          int32(parts),
+				PartSize:       int32(partSize),
 				MaxConnections: s.MaxConnections,
 			}
 			u.upload(&session, file.File, file.Size, key)
@@ -216,7 +231,7 @@ func (u *Uploader) uploadExtraFiles(s *flip.UploadSession, extraFiles *ExtraFile
 	return nil
 }
 
-func (u *Uploader) startWorkers(s *flip.UploadSession, r io.ReaderAt, env *env) {
+func (u *Uploader) startWorkers(s *sdk.UploadSession, r io.ReaderAt, env *env) {
 	u.logf("starting %d workers\n", env.workers)
 
 	for i := 0; i < env.workers; i++ {
@@ -233,13 +248,14 @@ func (u *Uploader) startWorkers(s *flip.UploadSession, r io.ReaderAt, env *env) 
 				retryDelay:  u.retryDelay,
 				partCounter: env.partCounter,
 				log:         u.DebugLog,
+				mediaIDch:   env.mediaIdch,
 			}
 			w.start()
 		}(i)
 	}
 }
 
-func (u *Uploader) deliverData(s *flip.UploadSession, fsize int64, env *env, tag string) error {
+func (u *Uploader) deliverData(s *sdk.UploadSession, fsize int64, env *env, tag string) error {
 	status, err := u.uploadStatus(s.Location, tag)
 	if err != nil {
 		return err
@@ -300,11 +316,11 @@ func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
 	return &status, nil
 }
 
-// Newflip.UploadSession creates new upload flip.UploadSession which gives a unique resource location
-// to upload the file. These flip.UploadSessions are being created with multi-chunk option.
+// NewUploadSession creates new upload UploadSession which gives a unique resource location
+// to upload the file. These UploadSessions are being created with multi-chunk option.
 func (u *Uploader) NewUploadSession(fname string, fsize int64,
-	profiles string, extraFiles []flip.ExtraFile) (*flip.UploadSession, error) {
-	body := flip.VideoUploadBody{
+	profiles string, extraFiles []sdk.ExtraFile) (*sdk.UploadSession, error) {
+	body := sdk.VideoUploadBody{
 		FileSize:   fsize,
 		FileName:   fname,
 		Profiles:   profiles,

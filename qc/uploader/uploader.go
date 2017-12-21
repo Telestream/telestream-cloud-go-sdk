@@ -14,7 +14,7 @@ import (
 
 	"strconv"
 
-	sdk "github.com/Telestream/telestream-cloud-go-sdk/flip"
+	sdk "github.com/Telestream/telestream-cloud-go-sdk/qc"
 )
 
 // Status describes the object returned from the upload API. Upload Status

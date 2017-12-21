@@ -6,6 +6,7 @@ machine:
 dependencies:
   pre:
     - go get github.com/ernesto-jimenez/go-querystring/query
+    - go get gopkg.in/go-resty/resty.v0
 
   override:
     - mkdir -p "$GOPATH/src/$IMPORT_PATH"
@@ -16,4 +17,5 @@ test:
     - go vet ./...
 
   override:
-    - go test -v ./...
+    - cd qc && go test
+    - cd flip && go test

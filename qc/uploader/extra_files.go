@@ -3,7 +3,7 @@ package uploader
 import (
 	"fmt"
 	"io"
-	sdk "github.com/Telestream/telestream-cloud-go-sdk/flip"
+	sdk "github.com/Telestream/telestream-cloud-go-sdk/qc"
 )
 
 type ExtraFilesInfo []ExtraFileInfo

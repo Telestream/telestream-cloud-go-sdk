@@ -1,4 +1,4 @@
-# \FlipApi
+# FlipApi
 
 All URIs are relative to *https://api.cloud.telestream.net/api/flip/3.1*
 

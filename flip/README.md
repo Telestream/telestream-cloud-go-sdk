@@ -26,6 +26,7 @@ Class | Method | HTTP request | Description
 *FlipApi* | [**CreateEncoding**](docs/FlipApi.md#createencoding) | **Post** /encodings.json | Creates an Encoding
 *FlipApi* | [**CreateFactory**](docs/FlipApi.md#createfactory) | **Post** /factories.json | Creates a new factory
 *FlipApi* | [**CreateProfile**](docs/FlipApi.md#createprofile) | **Post** /profiles.json | Creates a Profile
+*FlipApi* | [**CreateVideo**](docs/FlipApi.md#createvideo) | **Post** /videos.json | Creates a Video from a provided source_url.
 *FlipApi* | [**CreateWorkorder**](docs/FlipApi.md#createworkorder) | **Post** /workorders.json | Creates a Workorder.
 *FlipApi* | [**DeleteEncoding**](docs/FlipApi.md#deleteencoding) | **Delete** /encodings/{id}.json | Deletes an Encoding from both Telestream Cloud and your storage. Returns an information whether the operation was successful.
 *FlipApi* | [**DeleteProfile**](docs/FlipApi.md#deleteprofile) | **Delete** /profiles/{id}.json | Deletes a given Profile
@@ -67,6 +68,7 @@ Class | Method | HTTP request | Description
  - [CopyProfileBody](docs/CopyProfileBody.md)
  - [CountResponse](docs/CountResponse.md)
  - [CreateEncodingBody](docs/CreateEncodingBody.md)
+ - [CreateVideoBody](docs/CreateVideoBody.md)
  - [DeletedResponse](docs/DeletedResponse.md)
  - [Encoding](docs/Encoding.md)
  - [EncodingSignedUrl](docs/EncodingSignedUrl.md)

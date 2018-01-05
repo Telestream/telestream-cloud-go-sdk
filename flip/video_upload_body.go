@@ -26,7 +26,8 @@ type VideoUploadBody struct {
 
 	PathFormat string `json:"path_format,omitempty"`
 
-	Payload map[string]string `json:"payload,omitempty"`
+	// Payload is an arbitrary text of length 256 or shorter that you can store along the Video. It is typically used to retain an association with one of your own DB record ID.
+	Payload string `json:"payload,omitempty"`
 
 	ExtraVariables map[string]string `json:"extra_variables,omitempty"`
 

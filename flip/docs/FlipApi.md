@@ -1,4 +1,4 @@
-# FlipApi
+# \FlipApi
 
 All URIs are relative to *https://api.cloud.telestream.net/api/flip/3.1*
 
@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**CreateEncoding**](FlipApi.md#CreateEncoding) | **Post** /encodings.json | Creates an Encoding
 [**CreateFactory**](FlipApi.md#CreateFactory) | **Post** /factories.json | Creates a new factory
 [**CreateProfile**](FlipApi.md#CreateProfile) | **Post** /profiles.json | Creates a Profile
+[**CreateVideo**](FlipApi.md#CreateVideo) | **Post** /videos.json | Creates a Video from a provided source_url.
 [**CreateWorkorder**](FlipApi.md#CreateWorkorder) | **Post** /workorders.json | Creates a Workorder.
 [**DeleteEncoding**](FlipApi.md#DeleteEncoding) | **Delete** /encodings/{id}.json | Deletes an Encoding from both Telestream Cloud and your storage. Returns an information whether the operation was successful.
 [**DeleteProfile**](FlipApi.md#DeleteProfile) | **Delete** /profiles/{id}.json | Deletes a given Profile
@@ -52,8 +53,8 @@ Cancels an Encoding.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -80,10 +81,10 @@ Copies a given Profile
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Profile. |
- **factoryId** | **string**| Id of a Factory. |
- **copyProfileBody** | [**CopyProfileBody**](CopyProfileBody.md)|  |
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional]
+ **id** | **string**| Id of a Profile. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **copyProfileBody** | [**CopyProfileBody**](CopyProfileBody.md)|  | 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -110,10 +111,10 @@ Creates an Encoding
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **createEncodingBody** | [**CreateEncodingBody**](CreateEncodingBody.md)|  |
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional]
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **createEncodingBody** | [**CreateEncodingBody**](CreateEncodingBody.md)|  | 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -140,8 +141,8 @@ Creates a new factory
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **createFactoryBody** | [**FactoryBody**](FactoryBody.md)|  |
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional]
+ **createFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
 
 ### Return type
 
@@ -168,14 +169,42 @@ Creates a Profile
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **createProfileBody** | [**ProfileBody**](ProfileBody.md)|  |
- **excludeAdvancedServices** | **bool**|  | [optional]
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default it is not set. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **createProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
+ **excludeAdvancedServices** | **bool**|  | [optional] 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default it is not set. | [optional] 
 
 ### Return type
 
 [**Profile**](Profile.md)
+
+### Authorization
+
+[api_key](../README.md#api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **CreateVideo**
+> Video CreateVideo($factoryId, $createVideoBody)
+
+Creates a Video from a provided source_url.
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **factoryId** | **string**| Id of a Factory. | 
+ **createVideoBody** | [**CreateVideoBody**](CreateVideoBody.md)|  | 
+
+### Return type
+
+[**Video**](Video.md)
 
 ### Authorization
 
@@ -198,10 +227,10 @@ Creates a Workorder.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **profileId** | **string**| Id of a Profile. | [optional]
- **file** | ***os.File**| Input file. | [optional]
- **sourceUrl** | **string**| URL pointing to an input file. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **profileId** | **string**| Id of a Profile. | [optional] 
+ **file** | ***os.File**| Input file. | [optional] 
+ **sourceUrl** | **string**| URL pointing to an input file. | [optional] 
 
 ### Return type
 
@@ -228,8 +257,8 @@ Deletes an Encoding from both Telestream Cloud and your storage. Returns an info
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -256,8 +285,8 @@ Deletes a given Profile
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Profile |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Profile | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -284,8 +313,8 @@ Deletes a Video object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -312,8 +341,8 @@ Delete a video's source file.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -340,10 +369,10 @@ Returns an Encoding object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional]
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional]
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -370,15 +399,15 @@ Returns a list of Encoding objects
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **videoId** | **string**| Id of a Video. When specified, the resulting list will contain videos that belong to the Video. | [optional]
- **status** | **string**| One of &#x60;success&#x60;, &#x60;fail&#x60;, &#x60;processing&#x60;. When specified, the resulting list will contain ecodings filtered by status. | [optional]
- **profileId** | **string**| Filter by profile_id. | [optional]
- **profileName** | **string**| Filter by profile_name. | [optional]
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional]
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **videoId** | **string**| Id of a Video. When specified, the resulting list will contain videos that belong to the Video. | [optional] 
+ **status** | **string**| One of &#x60;success&#x60;, &#x60;fail&#x60;, &#x60;processing&#x60;. When specified, the resulting list will contain ecodings filtered by status. | [optional] 
+ **profileId** | **string**| Filter by profile_id. | [optional] 
+ **profileName** | **string**| Filter by profile_name. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -405,7 +434,7 @@ Returns a number of Encoding objects created using a given factory.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -434,9 +463,9 @@ Returns a collection of Factory objects.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional]
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
 
 ### Return type
 
@@ -465,8 +494,8 @@ Returns a Factory object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id of a factory |
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional]
+ **id** | **string**| id of a factory | 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
 
 ### Return type
 
@@ -493,7 +522,7 @@ Returns a Factory's notification settings.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -520,9 +549,9 @@ Returns a Profile object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idOrName** | **string**| A name or an id of a Profile. |
- **factoryId** | **string**| Id of a Factory. |
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional]
+ **idOrName** | **string**| A name or an id of a Profile. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -549,8 +578,8 @@ Returns a list of Encodings that belong to a Profile.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idOrName** | **string**| Id or name of a Profile. |
- **factoryId** | **string**| Id of a Factory. |
+ **idOrName** | **string**| Id or name of a Profile. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -577,11 +606,11 @@ Returns a collection of Profile objects.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **excludeAdvancedServices** | **bool**| Determine whether exclude Advanced Services profiles from the results. By default this is not set. | [optional]
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional]
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **excludeAdvancedServices** | **bool**| Determine whether exclude Advanced Services profiles from the results. By default this is not set. | [optional] 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
 
 ### Return type
 
@@ -608,9 +637,9 @@ Returns a collection of Video objects queued for encoding.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
 
 ### Return type
 
@@ -639,8 +668,8 @@ Resubmits the video to encode. Please note that this option will work only for v
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **resubmitVideoBody** | [**ResubmitVideoBody**](ResubmitVideoBody.md)|  |
+ **factoryId** | **string**| Id of a Factory. | 
+ **resubmitVideoBody** | [**ResubmitVideoBody**](ResubmitVideoBody.md)|  | 
 
 ### Return type
 
@@ -667,8 +696,8 @@ Retries a failed encoding.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -695,8 +724,8 @@ Returns a signed url pointing to an Encoding.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -723,8 +752,8 @@ Returns a list of signed urls pointing to an Encoding's outputs.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -751,8 +780,8 @@ Returns a signed url pointing to a Video.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -779,8 +808,8 @@ Toggles synchronisation settings.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id of the factory |
- **factorySyncBody** | [**FactorySyncBody**](FactorySyncBody.md)|  |
+ **id** | **string**| id of the factory | 
+ **factorySyncBody** | [**FactorySyncBody**](FactorySyncBody.md)|  | 
 
 ### Return type
 
@@ -807,11 +836,11 @@ Updates an Encoding
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. |
- **factoryId** | **string**| Id of a Factory. |
- **updateEncodingBody** | [**UpdateEncodingBody**](UpdateEncodingBody.md)|  |
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional]
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional]
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **updateEncodingBody** | [**UpdateEncodingBody**](UpdateEncodingBody.md)|  | 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -838,9 +867,9 @@ Updates a Factory's settings. Returns a Factory object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id of the factory |
- **updateFactoryBody** | [**FactoryBody**](FactoryBody.md)|  |
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional]
+ **id** | **string**| id of the factory | 
+ **updateFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
 
 ### Return type
 
@@ -867,8 +896,8 @@ Updates a Factory's notification settings.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **cloudNotificationSettingsBody** | [**CloudNotificationSettings**](CloudNotificationSettings.md)|  |
+ **factoryId** | **string**| Id of a Factory. | 
+ **cloudNotificationSettingsBody** | [**CloudNotificationSettings**](CloudNotificationSettings.md)|  | 
 
 ### Return type
 
@@ -895,11 +924,11 @@ Updates a given Profile
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**|  |
- **factoryId** | **string**| Id of a Factory. |
- **updateProfileBody** | [**ProfileBody**](ProfileBody.md)|  |
- **excludeAdvancedServices** | **bool**|  | [optional]
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional]
+ **id** | **string**|  | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **updateProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
+ **excludeAdvancedServices** | **bool**|  | [optional] 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -926,8 +955,8 @@ Creates an upload session.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  |
+ **factoryId** | **string**| Id of a Factory. | 
+ **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  | 
 
 ### Return type
 
@@ -954,8 +983,8 @@ Returns a Video object.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -982,12 +1011,12 @@ Returns a list of Encodings that belong to a Video.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional]
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional]
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
 
 ### Return type
 
@@ -1014,8 +1043,8 @@ Returns a Video's metadata
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. |
- **factoryId** | **string**| Id of a Factory. |
+ **id** | **string**| Id of a Video. | 
+ **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -1042,9 +1071,9 @@ Returns a collection of Video objects.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
 
 ### Return type
 
@@ -1071,9 +1100,9 @@ Returns a collection of Workflows that belong to a Factory.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. |
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional]
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional]
+ **factoryId** | **string**| Id of a Factory. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
 
 ### Return type
 
@@ -1089,3 +1118,4 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

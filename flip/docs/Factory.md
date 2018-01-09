@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 **InputBucketFilePattern** | **string** | A pattern that will be used to locate files in the input bucket. Valid wildcards might be used. | [optional] [default to null]
 **OutputsPathFormat** | **string** |  | [optional] [default to null]
 **StorageProvider** | **int32** | Specifies which storage provider the factory should use. Available options: S3: 0, Google Cloud Storage: 1, FTP storage: 2, Google Cloud Interoperability Storage: 5, Flip storage: 7, FASP storage: 8, Azure Blob Storage: 9 | [optional] [default to null]
-**ProviderSpecificSettings** | [**interface{}**](interface{}.md) |  | [optional] [default to null]
+**ProviderSpecificSettings** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -20,21 +20,20 @@ Method | HTTP request | Description
 
 
 # **CancelJob**
-> CancelJob($project, $job)
+> CancelJob(ctx, project, job)
 
 
-
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **job** | **string**| A unique identifier of a Job. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **job** | **string**| A unique identifier of a Job. | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -48,17 +47,16 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateJob**
-> Job CreateJob($project, $data)
-
+> Job CreateJob(ctx, project, data)
 Create a new job
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **data** | [**JobData**](JobData.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **data** | [**JobData**](JobData.md)|  | 
 
 ### Return type
 
@@ -76,16 +74,22 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateProject**
-> Project CreateProject($data)
-
+> Project CreateProject(ctx, optional)
 Create a new project
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**Data**](Data.md)|  | [optional] 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **data** | [**Data**](Data.md)|  | 
 
 ### Return type
 
@@ -103,17 +107,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetJob**
-> Job GetJob($project, $job)
-
+> Job GetJob(ctx, project, job)
 Get QC job
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **job** | **string**| A unique identifier of a Job. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **job** | **string**| A unique identifier of a Job. | 
 
 ### Return type
 
@@ -131,16 +134,15 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **GetProject**
-> Project GetProject($project)
-
+> Project GetProject(ctx, project)
 Get project by Id
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
 
 ### Return type
 
@@ -158,20 +160,27 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ListJobs**
-> JobsCollection ListJobs($project, $expand, $status, $perPage, $page)
-
+> JobsCollection ListJobs(ctx, project, optional)
 Get jobs form projects
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **project** | **string**| A unique identifier of a Project. | 
- **expand** | **bool**| Expand details of job | [optional] 
- **status** | **string**| Filter jobs by status | [optional] 
- **perPage** | **int32**| Limit number of listed jobs | [optional] [default to 30]
- **page** | **int32**| Index of jobs page to be listed | [optional] 
+ **expand** | **bool**| Expand details of job | 
+ **status** | **string**| Filter jobs by status | 
+ **perPage** | **int32**| Limit number of listed jobs | [default to 30]
+ **page** | **int32**| Index of jobs page to be listed | 
 
 ### Return type
 
@@ -189,12 +198,10 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ListProjects**
-> []Project ListProjects()
-
+> []Project ListProjects(ctx, )
 List all projects for an account
 
-
-### Parameters
+### Required Parameters
 This endpoint does not need any parameter.
 
 ### Return type
@@ -213,17 +220,24 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ModifyProject**
-> Project ModifyProject($project, $data)
-
+> Project ModifyProject(ctx, project, optional)
 Modify project
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **project** | **string**|  | 
- **data** | [**Data1**](Data1.md)|  | [optional] 
+ **data** | [**Data1**](Data1.md)|  | 
 
 ### Return type
 
@@ -241,17 +255,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Proxy**
-> Proxy Proxy($project, $job)
+> Proxy Proxy(ctx, project, job)
 
 
-
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **job** | **string**| A unique identifier of a Job. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **job** | **string**| A unique identifier of a Job. | 
 
 ### Return type
 
@@ -269,21 +282,20 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **RemoveJob**
-> RemoveJob($project, $job)
+> RemoveJob(ctx, project, job)
 
 
-
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **job** | **string**| A unique identifier of a Job. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **job** | **string**| A unique identifier of a Job. | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -297,20 +309,19 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **RemoveProject**
-> RemoveProject($project)
+> RemoveProject(ctx, project)
 
 
-
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**|  | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -324,21 +335,20 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **SignedUrls**
-> map[string]string SignedUrls($project, $job)
+> map[string]string SignedUrls(ctx, project, job)
 
 
-
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **job** | **string**| A unique identifier of a Job. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **job** | **string**| A unique identifier of a Job. | 
 
 ### Return type
 
-[**map[string]string**](map.md)
+**map[string]string**
 
 ### Authorization
 
@@ -352,17 +362,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UploadVideo**
-> UploadSession UploadVideo($project, $videoUploadBody)
-
+> UploadSession UploadVideo(ctx, project, videoUploadBody)
 Creates an upload session
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **project** | **string**| A unique identifier of a Project. | 
- **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **project** | **string**| A unique identifier of a Project. | 
+  **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  | 
 
 ### Return type
 

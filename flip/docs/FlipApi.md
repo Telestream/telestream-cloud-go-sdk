@@ -1,4 +1,4 @@
-# FlipApi
+# \FlipApi
 
 All URIs are relative to *https://api.cloud.telestream.net/api/flip/3.1*
 
@@ -44,17 +44,16 @@ Method | HTTP request | Description
 
 
 # **CancelEncoding**
-> CanceledResponse CancelEncoding($id, $factoryId)
-
+> CanceledResponse CancelEncoding(ctx, id, factoryId)
 Cancels an Encoding.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -72,19 +71,28 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CopyProfile**
-> Profile CopyProfile($id, $factoryId, $copyProfileBody, $expand)
-
+> Profile CopyProfile(ctx, id, factoryId, copyProfileBody, optional)
 Copies a given Profile
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Profile. | 
+  **factoryId** | **string**| Id of a Factory. | 
+  **copyProfileBody** | [**CopyProfileBody**](CopyProfileBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| Id of a Profile. | 
  **factoryId** | **string**| Id of a Factory. | 
  **copyProfileBody** | [**CopyProfileBody**](CopyProfileBody.md)|  | 
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | 
 
 ### Return type
 
@@ -102,19 +110,27 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateEncoding**
-> Encoding CreateEncoding($factoryId, $createEncodingBody, $screenshots, $preciseStatus)
-
+> Encoding CreateEncoding(ctx, factoryId, createEncodingBody, optional)
 Creates an Encoding
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **createEncodingBody** | [**CreateEncodingBody**](CreateEncodingBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
  **createEncodingBody** | [**CreateEncodingBody**](CreateEncodingBody.md)|  | 
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | 
 
 ### Return type
 
@@ -132,17 +148,24 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateFactory**
-> Factory CreateFactory($createFactoryBody, $withStorageProvider)
-
+> Factory CreateFactory(ctx, createFactoryBody, optional)
 Creates a new factory
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **createFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **createFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | 
 
 ### Return type
 
@@ -160,19 +183,27 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateProfile**
-> Profile CreateProfile($factoryId, $createProfileBody, $excludeAdvancedServices, $expand)
-
+> Profile CreateProfile(ctx, factoryId, createProfileBody, optional)
 Creates a Profile
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **createProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
  **createProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
- **excludeAdvancedServices** | **bool**|  | [optional] 
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default it is not set. | [optional] 
+ **excludeAdvancedServices** | **bool**|  | 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default it is not set. | 
 
 ### Return type
 
@@ -190,17 +221,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateVideo**
-> Video CreateVideo($factoryId, $createVideoBody)
-
+> Video CreateVideo(ctx, factoryId, createVideoBody)
 Creates a Video from a provided source_url.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
- **createVideoBody** | [**CreateVideoBody**](CreateVideoBody.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **createVideoBody** | [**CreateVideoBody**](CreateVideoBody.md)|  | 
 
 ### Return type
 
@@ -218,23 +248,30 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **CreateWorkorder**
-> CreateWorkorder($factoryId, $profileId, $file, $sourceUrl)
-
+> CreateWorkorder(ctx, factoryId, optional)
 Creates a Workorder.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **profileId** | **string**| Id of a Profile. | [optional] 
- **file** | ***os.File**| Input file. | [optional] 
- **sourceUrl** | **string**| URL pointing to an input file. | [optional] 
+ **profileId** | **string**| Id of a Profile. | 
+ **file** | ***os.File**| Input file. | 
+ **sourceUrl** | **string**| URL pointing to an input file. | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -248,17 +285,16 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteEncoding**
-> DeletedResponse DeleteEncoding($id, $factoryId)
-
+> DeletedResponse DeleteEncoding(ctx, id, factoryId)
 Deletes an Encoding from both Telestream Cloud and your storage. Returns an information whether the operation was successful.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -276,17 +312,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteProfile**
-> DeletedResponse DeleteProfile($id, $factoryId)
-
+> DeletedResponse DeleteProfile(ctx, id, factoryId)
 Deletes a given Profile
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Profile | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Profile | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -304,17 +339,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteVideo**
-> DeletedResponse DeleteVideo($id, $factoryId)
-
+> DeletedResponse DeleteVideo(ctx, id, factoryId)
 Deletes a Video object.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -332,17 +366,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteVideoSource**
-> DeletedResponse DeleteVideoSource($id, $factoryId)
-
+> DeletedResponse DeleteVideoSource(ctx, id, factoryId)
 Delete a video's source file.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -360,19 +393,27 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Encoding**
-> Encoding Encoding($id, $factoryId, $screenshots, $preciseStatus)
-
+> Encoding Encoding(ctx, id, factoryId, optional)
 Returns an Encoding object.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| Id of an Encoding. | 
  **factoryId** | **string**| Id of a Factory. | 
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | 
 
 ### Return type
 
@@ -390,24 +431,31 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Encodings**
-> PaginatedEncodingsCollection Encodings($factoryId, $videoId, $status, $profileId, $profileName, $page, $perPage, $screenshots, $preciseStatus)
-
+> PaginatedEncodingsCollection Encodings(ctx, factoryId, optional)
 Returns a list of Encoding objects
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **videoId** | **string**| Id of a Video. When specified, the resulting list will contain videos that belong to the Video. | [optional] 
- **status** | **string**| One of &#x60;success&#x60;, &#x60;fail&#x60;, &#x60;processing&#x60;. When specified, the resulting list will contain ecodings filtered by status. | [optional] 
- **profileId** | **string**| Filter by profile_id. | [optional] 
- **profileName** | **string**| Filter by profile_name. | [optional] 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
+ **videoId** | **string**| Id of a Video. When specified, the resulting list will contain videos that belong to the Video. | 
+ **status** | **string**| One of &#x60;success&#x60;, &#x60;fail&#x60;, &#x60;processing&#x60;. When specified, the resulting list will contain ecodings filtered by status. | 
+ **profileId** | **string**| Filter by profile_id. | 
+ **profileName** | **string**| Filter by profile_name. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | 
 
 ### Return type
 
@@ -425,16 +473,15 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **EncodingsCount**
-> CountResponse EncodingsCount($factoryId)
-
+> CountResponse EncodingsCount(ctx, factoryId)
 Returns a number of Encoding objects created using a given factory.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -452,20 +499,26 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Factories**
-> PaginatedFactoryCollection Factories($page, $perPage, $withStorageProvider)
-
+> PaginatedFactoryCollection Factories(ctx, optional)
 Returns a collection of Factory objects.
 
 Returns a collection of Factory objects.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | 
 
 ### Return type
 
@@ -483,19 +536,26 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Factory**
-> Factory Factory($id, $withStorageProvider)
-
+> Factory Factory(ctx, id, optional)
 Returns a Factory object.
 
 Returns a Factory object.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| id of a factory | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| id of a factory | 
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | 
 
 ### Return type
 
@@ -513,16 +573,15 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Notifications**
-> CloudNotificationSettings Notifications($factoryId)
-
+> CloudNotificationSettings Notifications(ctx, factoryId)
 Returns a Factory's notification settings.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -540,18 +599,26 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Profile**
-> Profile Profile($idOrName, $factoryId, $expand)
-
+> Profile Profile(ctx, idOrName, factoryId, optional)
 Returns a Profile object.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **idOrName** | **string**| A name or an id of a Profile. | 
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **idOrName** | **string**| A name or an id of a Profile. | 
  **factoryId** | **string**| Id of a Factory. | 
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | 
 
 ### Return type
 
@@ -569,17 +636,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ProfileEncodings**
-> PaginatedEncodingsCollection ProfileEncodings($idOrName, $factoryId)
-
+> PaginatedEncodingsCollection ProfileEncodings(ctx, idOrName, factoryId)
 Returns a list of Encodings that belong to a Profile.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idOrName** | **string**| Id or name of a Profile. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **idOrName** | **string**| Id or name of a Profile. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -597,20 +663,27 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Profiles**
-> PaginatedProfilesCollection Profiles($factoryId, $excludeAdvancedServices, $expand, $page, $perPage)
-
+> PaginatedProfilesCollection Profiles(ctx, factoryId, optional)
 Returns a collection of Profile objects.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **excludeAdvancedServices** | **bool**| Determine whether exclude Advanced Services profiles from the results. By default this is not set. | [optional] 
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **excludeAdvancedServices** | **bool**| Determine whether exclude Advanced Services profiles from the results. By default this is not set. | 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
 
 ### Return type
 
@@ -628,18 +701,25 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **QueuedVideos**
-> PaginatedVideoCollection QueuedVideos($factoryId, $page, $perPage)
-
+> PaginatedVideoCollection QueuedVideos(ctx, factoryId, optional)
 Returns a collection of Video objects queued for encoding.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
 
 ### Return type
 
@@ -657,23 +737,22 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ResubmitVideo**
-> ResubmitVideo($factoryId, $resubmitVideoBody)
-
+> ResubmitVideo(ctx, factoryId, resubmitVideoBody)
 Resubmits a video to encode.
 
 Resubmits the video to encode. Please note that this option will work only for videos in `success` status.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
- **resubmitVideoBody** | [**ResubmitVideoBody**](ResubmitVideoBody.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **resubmitVideoBody** | [**ResubmitVideoBody**](ResubmitVideoBody.md)|  | 
 
 ### Return type
 
-void (empty response body)
+ (empty response body)
 
 ### Authorization
 
@@ -687,17 +766,16 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **RetryEncoding**
-> RetriedResponse RetryEncoding($id, $factoryId)
-
+> RetriedResponse RetryEncoding(ctx, id, factoryId)
 Retries a failed encoding.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -715,17 +793,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **SignedEncodingUrl**
-> EncodingSignedUrl SignedEncodingUrl($id, $factoryId)
-
+> EncodingSignedUrl SignedEncodingUrl(ctx, id, factoryId)
 Returns a signed url pointing to an Encoding.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -743,17 +820,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **SignedEncodingUrls**
-> EncodingSignedUrls SignedEncodingUrls($id, $factoryId)
-
+> EncodingSignedUrls SignedEncodingUrls(ctx, id, factoryId)
 Returns a list of signed urls pointing to an Encoding's outputs.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of an Encoding. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -771,17 +847,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **SignedVideoUrl**
-> SignedVideoUrl SignedVideoUrl($id, $factoryId)
-
+> SignedVideoUrl SignedVideoUrl(ctx, id, factoryId)
 Returns a signed url pointing to a Video.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -799,17 +874,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ToggleFactorySync**
-> FactorySync ToggleFactorySync($id, $factorySyncBody)
-
+> FactorySync ToggleFactorySync(ctx, id, factorySyncBody)
 Toggles synchronisation settings.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| id of the factory | 
- **factorySyncBody** | [**FactorySyncBody**](FactorySyncBody.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| id of the factory | 
+  **factorySyncBody** | [**FactorySyncBody**](FactorySyncBody.md)|  | 
 
 ### Return type
 
@@ -827,20 +901,29 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateEncoding**
-> Encoding UpdateEncoding($id, $factoryId, $updateEncodingBody, $screenshots, $preciseStatus)
-
+> Encoding UpdateEncoding(ctx, id, factoryId, updateEncodingBody, optional)
 Updates an Encoding
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
+  **updateEncodingBody** | [**UpdateEncodingBody**](UpdateEncodingBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| Id of an Encoding. | 
  **factoryId** | **string**| Id of a Factory. | 
  **updateEncodingBody** | [**UpdateEncodingBody**](UpdateEncodingBody.md)|  | 
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | 
 
 ### Return type
 
@@ -858,18 +941,26 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateFactory**
-> Factory UpdateFactory($id, $updateFactoryBody, $withStorageProvider)
-
+> Factory UpdateFactory(ctx, id, updateFactoryBody, optional)
 Updates a Factory's settings. Returns a Factory object.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| id of the factory | 
+  **updateFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| id of the factory | 
  **updateFactoryBody** | [**FactoryBody**](FactoryBody.md)|  | 
- **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | [optional] 
+ **withStorageProvider** | **bool**| if set to &#x60;true&#x60;, results will include a storage provider&#39;s id | 
 
 ### Return type
 
@@ -887,17 +978,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateNotifications**
-> CloudNotificationSettings UpdateNotifications($factoryId, $cloudNotificationSettingsBody)
-
+> CloudNotificationSettings UpdateNotifications(ctx, factoryId, cloudNotificationSettingsBody)
 Updates a Factory's notification settings.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
- **cloudNotificationSettingsBody** | [**CloudNotificationSettings**](CloudNotificationSettings.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **cloudNotificationSettingsBody** | [**CloudNotificationSettings**](CloudNotificationSettings.md)|  | 
 
 ### Return type
 
@@ -915,20 +1005,29 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateProfile**
-> Profile UpdateProfile($id, $factoryId, $updateProfileBody, $excludeAdvancedServices, $expand)
-
+> Profile UpdateProfile(ctx, id, factoryId, updateProfileBody, optional)
 Updates a given Profile
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**|  | 
+  **factoryId** | **string**| Id of a Factory. | 
+  **updateProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**|  | 
  **factoryId** | **string**| Id of a Factory. | 
  **updateProfileBody** | [**ProfileBody**](ProfileBody.md)|  | 
- **excludeAdvancedServices** | **bool**|  | [optional] 
- **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | [optional] 
+ **excludeAdvancedServices** | **bool**|  | 
+ **expand** | **bool**| If expand option is set Profile objects will contain all command parameters, even if their value is default. By default this is not set. | 
 
 ### Return type
 
@@ -946,17 +1045,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UploadVideo**
-> UploadSession UploadVideo($factoryId, $videoUploadBody)
-
+> UploadSession UploadVideo(ctx, factoryId, videoUploadBody)
 Creates an upload session.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **factoryId** | **string**| Id of a Factory. | 
- **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+  **videoUploadBody** | [**VideoUploadBody**](VideoUploadBody.md)|  | 
 
 ### Return type
 
@@ -974,17 +1072,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Video**
-> Video Video($id, $factoryId)
-
+> Video Video(ctx, id, factoryId)
 Returns a Video object.
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -1002,21 +1099,29 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **VideoEncodings**
-> PaginatedEncodingsCollection VideoEncodings($id, $factoryId, $page, $perPage, $screenshots, $preciseStatus)
-
+> PaginatedEncodingsCollection VideoEncodings(ctx, id, factoryId, optional)
 Returns a list of Encodings that belong to a Video.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **string**| Id of a Video. | 
  **factoryId** | **string**| Id of a Factory. | 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
- **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | [optional] 
- **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
+ **screenshots** | **bool**| Determines whether the response will include screenshots. By default this is not set. | 
+ **preciseStatus** | **bool**| Determines whether the response will include a precise status. By default this is not set. | 
 
 ### Return type
 
@@ -1034,17 +1139,16 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **VideoMetadata**
-> VideoMetadata VideoMetadata($id, $factoryId)
-
+> VideoMetadata VideoMetadata(ctx, id, factoryId)
 Returns a Video's metadata
 
-
-### Parameters
+### Required Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **string**| Id of a Video. | 
- **factoryId** | **string**| Id of a Factory. | 
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
+  **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
 
@@ -1062,18 +1166,25 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Videos**
-> PaginatedVideoCollection Videos($factoryId, $page, $perPage)
-
+> PaginatedVideoCollection Videos(ctx, factoryId, optional)
 Returns a collection of Video objects.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
 
 ### Return type
 
@@ -1091,18 +1202,25 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Workflows**
-> PaginatedWorkflowsCollection Workflows($factoryId, $page, $perPage)
-
+> PaginatedWorkflowsCollection Workflows(ctx, factoryId, optional)
 Returns a collection of Workflows that belong to a Factory.
 
+### Required Parameters
 
-### Parameters
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **factoryId** | **string**| Id of a Factory. | 
- **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | [optional] 
- **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | [optional] 
+ **page** | **int32**| A page to be fetched. Default is &#x60;1&#x60;. | 
+ **perPage** | **int32**| A number of results per page. Default is &#x60;100&#x60;. | 
 
 ### Return type
 

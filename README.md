@@ -26,10 +26,12 @@ This example show uploading media file to flip service. If you want to use other
         factory := "ta0180de394aec03412x840ca8304"
         profiles := "h264"
 
-        client := flip.NewFlipApi()
-        client.Configuration.APIKey["X-Api-Key"] = api_key
 
-        upload, err := uploader.New(client, factory)
+        config := flip.NewConfiguration()
+	    client := flip.NewAPIClient(config)
+        ctx := context.WithValue(context.Background(), flip.ContextAPIKey, flip.APIKey{Key: key})
+
+        upload, err := uploader.New(client.FlipApi, factory)
         if err != nil {
             panic(err)
         }
@@ -44,7 +46,7 @@ This example show uploading media file to flip service. If you want to use other
             panic(err)
         }
 
-        err = upload.Upload(file, fileInfo.Name(), fileInfo.Size(), profiles, nil)
+        err = upload.Upload(ctx, file, fileInfo.Name(), fileInfo.Size(), profiles, nil)
         if err != nil {
             panic(err)
         }

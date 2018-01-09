@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Telestream/telestream-cloud-go-sdk/flip/uploader"
+	uploader "github.com/Telestream/telestream-cloud-go-sdk/flip/uploader"
 )
 
 func ExampleUploader_Upload() {

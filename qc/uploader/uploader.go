@@ -1,6 +1,7 @@
 package uploader
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -86,7 +87,7 @@ type Uploader struct {
 }
 
 type videoUploader interface {
-	UploadVideo(string, sdk.VideoUploadBody) (*sdk.UploadSession, *sdk.APIResponse, error)
+	UploadVideo(context.Context, string, sdk.VideoUploadBody) (sdk.UploadSession, *http.Response, error)
 }
 
 // New returns a new Uploader which will be uploading files to the given
@@ -105,13 +106,13 @@ func New(cl videoUploader, factoryID string) (*Uploader, error) {
 // UploadSession uploads files based on the given sdk.UploadSession. If the upload has
 // failed or has been stopped, it is possible to resume it using this method.
 // Uploading stops on the first worker error and returns it.
-func (u *Uploader) UploadSession(s *sdk.UploadSession, r io.ReaderAt, size int64, extraFiles *ExtraFilesInfo) error {
-	err := u.upload(s, r, size, "")
+func (u *Uploader) UploadSession(ctx context.Context, s *sdk.UploadSession, r io.ReaderAt, size int64, extraFiles *ExtraFilesInfo) error {
+	err := u.upload(ctx, s, r, size, "")
 	if err != nil {
 		return err
 	}
 
-	err = u.uploadExtraFiles(s, extraFiles)
+	err = u.uploadExtraFiles(ctx, s, extraFiles)
 	if err != nil {
 		return err
 	}
@@ -121,25 +122,25 @@ func (u *Uploader) UploadSession(s *sdk.UploadSession, r io.ReaderAt, size int64
 
 // Upload is a short version of UploadSession. It takes care of creating
 // UploadSessions and immediately starts the file upload.
-func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
+func (u *Uploader) Upload(ctx context.Context, r io.ReaderAt, filename string, size int64,
 	profiles string, extraFilesInfo *ExtraFilesInfo) error {
 	var extraFiles []sdk.ExtraFile
 	if extraFilesInfo != nil {
 		extraFiles = extraFilesInfo.ConvertToExtraFiles()
 	}
-	s, err := u.NewUploadSession(filename, size, profiles, extraFiles)
+	s, err := u.NewUploadSession(ctx, filename, size, profiles, extraFiles)
 	if err != nil {
 		fmt.Println("Failed to create a new session.")
 		return err
 	}
 
-	err = u.upload(s, r, size, "")
+	err = u.upload(ctx, s, r, size, "")
 	if err != nil {
 		fmt.Println("Failed to upload the input file.")
 		return err
 	}
 
-	err = u.uploadExtraFiles(s, extraFilesInfo)
+	err = u.uploadExtraFiles(ctx, s, extraFilesInfo)
 	if err != nil {
 		fmt.Println("Failed to upload extra files.")
 		return err
@@ -148,7 +149,7 @@ func (u *Uploader) Upload(r io.ReaderAt, filename string, size int64,
 	return nil
 }
 
-func (u *Uploader) upload(s *sdk.UploadSession, r io.ReaderAt, size int64, tag string) (err error) {
+func (u *Uploader) upload(ctx context.Context, s *sdk.UploadSession, r io.ReaderAt, size int64, tag string) (err error) {
 	u.logf("parts=%d, part_size=%d bytes, max_connections=%d, tag=%s\n", s.Parts,
 		s.PartSize, s.MaxConnections, tag)
 
@@ -160,6 +161,14 @@ func (u *Uploader) upload(s *sdk.UploadSession, r io.ReaderAt, size int64, tag s
 
 	done := make(chan struct{})
 	go func() { env.wg.Wait(); close(done) }()
+
+	go func() {
+		select {
+		case <-done:
+		case <-ctx.Done():
+			env.errch <- ctx.Err()
+		}
+	}()
 
 	var once sync.Once
 loop:
@@ -200,11 +209,11 @@ loop:
 	return nil
 }
 
-func (u *Uploader) uploadExtraFiles(s *sdk.UploadSession, extraFiles *ExtraFilesInfo) error {
+func (u *Uploader) uploadExtraFiles(ctx context.Context, s *sdk.UploadSession, extraFiles *ExtraFilesInfo) error {
 	if extraFiles == nil {
 		return nil
 	}
-	extraFilesResponse := s.ExtraFiles.(map[string]interface{})
+	extraFilesResponse := (*s.ExtraFiles).(map[string]interface{})
 
 	for _, tag := range *extraFiles {
 		for i, file := range tag.Files {
@@ -224,7 +233,7 @@ func (u *Uploader) uploadExtraFiles(s *sdk.UploadSession, extraFiles *ExtraFiles
 				PartSize:       int32(partSize),
 				MaxConnections: s.MaxConnections,
 			}
-			u.upload(&session, file.File, file.Size, key)
+			u.upload(ctx, &session, file.File, file.Size, key)
 		}
 	}
 
@@ -318,7 +327,7 @@ func (u *Uploader) uploadStatus(location, tag string) (*Status, error) {
 
 // NewUploadSession creates new upload UploadSession which gives a unique resource location
 // to upload the file. These UploadSessions are being created with multi-chunk option.
-func (u *Uploader) NewUploadSession(fname string, fsize int64,
+func (u *Uploader) NewUploadSession(ctx context.Context, fname string, fsize int64,
 	profiles string, extraFiles []sdk.ExtraFile) (*sdk.UploadSession, error) {
 	body := sdk.VideoUploadBody{
 		FileSize:   fsize,
@@ -328,13 +337,13 @@ func (u *Uploader) NewUploadSession(fname string, fsize int64,
 		ExtraFiles: extraFiles,
 	}
 
-	session, _, err := u.cl.UploadVideo(u.factoryID, body)
+	session, _, err := u.cl.UploadVideo(ctx, u.factoryID, body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return session, nil
+	return &session, nil
 }
 
 func (u *Uploader) logf(format string, args ...interface{}) {

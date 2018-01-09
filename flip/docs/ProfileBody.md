@@ -96,7 +96,7 @@ Name | Type | Description | Notes
 **VantageGroupId** | **string** |  | [optional] [default to null]
 **WatermarkBumpers** | **string** |  | [optional] [default to null]
 **WatermarkTrailers** | **string** |  | [optional] [default to null]
-**WorkorderCriteria** | [**interface{}**](interface{}.md) |  | [optional] [default to null]
+**WorkorderCriteria** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **TachyonAllowRemovePulldown** | **bool** | Enable more sensitive pulldown removal algorithm. | [optional] [default to null]
 **TachyonEnablePostPulldownFilter** | **bool** | If the images you are converting are composited 29.976, but the pulldown pattern was not adhered to when performing the composite, this setting is required to remove combing artifacts. It will also remove combing artifacts related to very poor 3:2 cadence. | [optional] [default to null]
 **TachyonMediaHintIsCartoon** | **bool** |  | [optional] [default to null]

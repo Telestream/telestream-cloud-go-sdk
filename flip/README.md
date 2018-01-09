@@ -99,13 +99,17 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Authorization
 
-
 ## api_key
-
 - **Type**: API key 
-- **API key parameter name**: X-Api-Key
-- **Location**: HTTP header
 
+Example
+```
+	auth := context.WithValue(context.Background(), sw.ContextAPIKey, sw.APIKey{
+		Key: "APIKEY",
+		Prefix: "Bearer", // Omit if not necessary.
+	})
+    r, err := client.Service.Operation(auth, args)
+```
 
 ## Author
 

@@ -28,7 +28,7 @@ This example show uploading media file to flip service. If you want to use other
 
 
         config := flip.NewConfiguration()
-	    client := flip.NewAPIClient(config)
+        client := flip.NewAPIClient(config)
         ctx := context.WithValue(context.Background(), flip.ContextAPIKey, flip.APIKey{Key: key})
 
         upload, err := uploader.New(client.FlipApi, factory)
@@ -46,7 +46,30 @@ This example show uploading media file to flip service. If you want to use other
             panic(err)
         }
 
-        err = upload.Upload(ctx, file, fileInfo.Name(), fileInfo.Size(), profiles, nil)
+        extraFile, err := os.Open("video.scc")
+        if err != nil {
+            panic(err)
+        }
+
+        extraFileInfo, err := extraFile.Stat()
+        if err != nil {
+            panic(err)
+        }
+
+        extraFiles := &uploader.ExtraFilesInfo{
+            {
+                Tag: "subtitles",
+                Files: []uploader.ExtraFileItem{
+                    {
+                        Name: extraFileInfo.Name(),
+                        File: extraFile,
+                        Size: extraFileInfo.Size(),
+                    },
+                },
+            },
+        }
+
+        err = upload.Upload(ctx, file, fileInfo.Name(), fileInfo.Size(), profiles, extraFiles)
         if err != nil {
             panic(err)
         }

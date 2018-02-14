@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | The ID of the Project. | [optional] [default to null]
-**AccountId** | **string** | The ID of the Account. | [optional] [default to null]
 **Name** | **string** | The name of the Project. | [optional] [default to null]
 **Description** | **string** | The description of the Project. | [optional] [default to null]
 **Status** | **string** | Determines a stage of training. | [optional] [default to null]

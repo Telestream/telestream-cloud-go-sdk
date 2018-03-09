@@ -13,7 +13,7 @@ package qc
 type VideoStream struct {
 
 	// Video stream duration measured in seconds.
-	Duration int32 `json:"duration,omitempty"`
+	Duration float32 `json:"duration,omitempty"`
 
 	Codec string `json:"codec,omitempty"`
 

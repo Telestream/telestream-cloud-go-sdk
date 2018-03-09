@@ -49,13 +49,13 @@ type Video struct {
 	FileSize int32 `json:"file_size,omitempty"`
 
 	// Number of frames per second.
-	Fps string `json:"fps,omitempty"`
+	Fps float32 `json:"fps,omitempty"`
 
 	// Height of the output video.
-	Height string `json:"height,omitempty"`
+	Height int32 `json:"height,omitempty"`
 
 	// Width of the output video.
-	Width string `json:"width,omitempty"`
+	Width int32 `json:"width,omitempty"`
 
 	// A mime type of the source file.
 	MimeType string `json:"mime_type,omitempty"`

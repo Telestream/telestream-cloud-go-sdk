@@ -25,16 +25,16 @@ type Encoding struct {
 	AudioCodec string `json:"audio_codec,omitempty"`
 
 	// A number of samples of audio carried per second.
-	AudioSampleRate string `json:"audio_sample_rate,omitempty"`
+	AudioSampleRate int32 `json:"audio_sample_rate,omitempty"`
 
 	// A date and time when the Encoding has been created.
 	CreatedAt string `json:"created_at,omitempty"`
 
-	Duration string `json:"duration,omitempty"`
+	Duration int32 `json:"duration,omitempty"`
 
-	EncodingProgress string `json:"encoding_progress,omitempty"`
+	EncodingProgress int32 `json:"encoding_progress,omitempty"`
 
-	EncodingTime string `json:"encoding_time,omitempty"`
+	EncodingTime int32 `json:"encoding_time,omitempty"`
 
 	// A class of an error that has occurred during the encoding process. It is present only if the encoding status is equal to `fail`.
 	ErrorClass string `json:"error_class,omitempty"`
@@ -48,19 +48,19 @@ type Encoding struct {
 	Extname string `json:"extname,omitempty"`
 
 	// A size of the output file.
-	FileSize string `json:"file_size,omitempty"`
+	FileSize int32 `json:"file_size,omitempty"`
 
 	// An array of output file names.
 	Files []string `json:"files,omitempty"`
 
 	// Number of frames per second.
-	Fps string `json:"fps,omitempty"`
+	Fps float32 `json:"fps,omitempty"`
 
 	// Height of the output video.
-	Height string `json:"height,omitempty"`
+	Height int32 `json:"height,omitempty"`
 
 	// Width of the output video.
-	Width string `json:"width,omitempty"`
+	Width int32 `json:"width,omitempty"`
 
 	// An URL pointing to a logfile.
 	LogfileUrl string `json:"logfile_url,omitempty"`
@@ -90,7 +90,7 @@ type Encoding struct {
 	UpdatedAt string `json:"updated_at,omitempty"`
 
 	// video bitrate (in bits/s)
-	VideoBitrate string `json:"video_bitrate,omitempty"`
+	VideoBitrate int32 `json:"video_bitrate,omitempty"`
 
 	// A codec that is used to encode video streams.
 	VideoCodec string `json:"video_codec,omitempty"`

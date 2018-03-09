@@ -15,5 +15,5 @@ type Container struct {
 	Type_ string `json:"type,omitempty"`
 
 	// File bitrate measured in bps
-	Bitrate string `json:"bitrate,omitempty"`
+	Bitrate int32 `json:"bitrate,omitempty"`
 }

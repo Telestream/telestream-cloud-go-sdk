@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Payload** | **string** | Arbitrary string stored along the Video object. | [optional] [default to null]
 **Pipeline** | **string** | String-encoded JSON describing profiles pipeline. | [optional] [default to null]
 **SubtitleFiles** | **[]string** | A list of urls pointing to remote subtitle files. | [optional] [default to null]
+**ExtraFiles** | [**map[string][]string**](array.md) |  | [optional] [default to null]
 **ExtraVariables** | **map[string]string** |  | [optional] [default to null]
 **PathFormat** | **string** |  | [optional] [default to null]
 

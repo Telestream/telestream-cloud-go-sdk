@@ -16,9 +16,25 @@ type Job struct {
 
 	Status string `json:"status,omitempty"`
 
+	State string `json:"state,omitempty"`
+
 	Duration int32 `json:"duration,omitempty"`
 
 	Type_ string `json:"type,omitempty"`
+
+	Progress int32 `json:"progress,omitempty"`
+
+	Filename string `json:"filename,omitempty"`
+
+	SourceUrl string `json:"source_url,omitempty"`
+
+	CreatedAt string `json:"created_at,omitempty"`
+
+	UpdatedAt string `json:"updated_at,omitempty"`
+
+	ErrorClass string `json:"error_class,omitempty"`
+
+	ErrorMessage string `json:"error_message,omitempty"`
 
 	Details *JobDetails `json:"details,omitempty"`
 }

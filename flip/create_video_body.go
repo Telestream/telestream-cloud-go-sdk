@@ -27,6 +27,8 @@ type CreateVideoBody struct {
 	// A list of urls pointing to remote subtitle files.
 	SubtitleFiles []string `json:"subtitle_files,omitempty"`
 
+	ExtraFiles map[string][]string `json:"extra_files,omitempty"`
+
 	ExtraVariables map[string]string `json:"extra_variables,omitempty"`
 
 	PathFormat string `json:"path_format,omitempty"`

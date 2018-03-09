@@ -18,10 +18,10 @@ type Alert struct {
 	Info string `json:"info,omitempty"`
 
 	// Start time of alert.
-	Begin string `json:"begin,omitempty"`
+	Begin float32 `json:"begin,omitempty"`
 
 	// End time of alert.
-	End string `json:"end,omitempty"`
+	End float32 `json:"end,omitempty"`
 
 	Stream int32 `json:"stream,omitempty"`
 

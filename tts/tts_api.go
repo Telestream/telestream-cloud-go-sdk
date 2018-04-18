@@ -495,9 +495,9 @@ func (a *TtsApiService) DeleteCorpus(ctx context.Context, projectID string, name
  Deletes the Job
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @param projectID ID of the Project
- @param jobId 
+ @param jobID 
  @return */
-func (a *TtsApiService) DeleteJob(ctx context.Context, projectID string, jobId string) ( *http.Response, error) {
+func (a *TtsApiService) DeleteJob(ctx context.Context, projectID string, jobID string) ( *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Delete")
 		localVarPostBody interface{}
@@ -506,9 +506,9 @@ func (a *TtsApiService) DeleteJob(ctx context.Context, projectID string, jobId s
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{id}"
+	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{jobID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", fmt.Sprintf("%v", jobId), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"jobID"+"}", fmt.Sprintf("%v", jobID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -637,9 +637,9 @@ func (a *TtsApiService) DeleteProject(ctx context.Context) ( *http.Response, err
  Returns the Job
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @param projectID ID of the Project
- @param jobId 
+ @param jobID 
  @return Job*/
-func (a *TtsApiService) Job(ctx context.Context, projectID string, jobId string) (Job,  *http.Response, error) {
+func (a *TtsApiService) Job(ctx context.Context, projectID string, jobID string) (Job,  *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody interface{}
@@ -649,9 +649,9 @@ func (a *TtsApiService) Job(ctx context.Context, projectID string, jobId string)
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{id}"
+	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{jobID}"
 	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", fmt.Sprintf("%v", jobId), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"jobID"+"}", fmt.Sprintf("%v", jobID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -716,9 +716,9 @@ func (a *TtsApiService) Job(ctx context.Context, projectID string, jobId string)
  Returns the Job Result
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @param projectID ID of the Project
- @param jobId 
+ @param jobID 
  @return JobResult*/
-func (a *TtsApiService) JobResult(ctx context.Context, projectID string, jobId string) (JobResult,  *http.Response, error) {
+func (a *TtsApiService) JobResult(ctx context.Context, projectID string, jobID string) (JobResult,  *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody interface{}
@@ -728,9 +728,9 @@ func (a *TtsApiService) JobResult(ctx context.Context, projectID string, jobId s
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{id}/result"
+	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{jobID}/result"
 	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"job_id"+"}", fmt.Sprintf("%v", jobId), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"jobID"+"}", fmt.Sprintf("%v", jobID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

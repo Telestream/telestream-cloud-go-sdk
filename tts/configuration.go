@@ -63,7 +63,7 @@ func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		BasePath:      "https://api.cloud.telestream.net/tts/v1.0",
 		DefaultHeader: make(map[string]string),
-		UserAgent:     "Swagger-Codegen/2.0.0/go",
+		UserAgent:     "Swagger-Codegen/2.0.1/go",
 	}
 	return cfg
 }

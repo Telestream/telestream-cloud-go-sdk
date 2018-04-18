@@ -52,7 +52,7 @@ type Job struct {
 	Format string `json:"format,omitempty"`
 
 	// The file size of the input file.
-	FileSize string `json:"file_size,omitempty"`
+	FileSize int32 `json:"file_size,omitempty"`
 
 	// A date and time when the job was created
 	CreatedAt string `json:"created_at,omitempty"`

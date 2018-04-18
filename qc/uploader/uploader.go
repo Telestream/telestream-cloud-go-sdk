@@ -21,7 +21,8 @@ import (
 // Status describes the object returned from the upload API. Upload Status
 // contains a slice of part numbers which are still missing.
 type Status struct {
-	MissingParts []int `json:"missing_parts"`
+	MediaID      string `json:"media_id"`
+	MissingParts []int  `json:"missing_parts"`
 }
 
 // delivery is what a worker gets from the Uploader. It describes a part of a
@@ -55,9 +56,6 @@ type env struct {
 	// wg is used to make sure all goroutines will end their work before Upload
 	// returns.
 	wg sync.WaitGroup
-
-	// mediaIdch is used to fetch a system id of an uploaded file from workers
-	mediaIdch chan string
 }
 
 // newEnv returns env with every value initialized.
@@ -69,7 +67,6 @@ func newEnv(s *sdk.UploadSession) *env {
 		deliverych:  make(chan delivery),
 		stopch:      make(chan struct{}),
 		errch:       make(chan error, n),
-		mediaIdch:   make(chan string, 1),
 	}
 }
 
@@ -201,10 +198,6 @@ loop:
 		return fmt.Errorf("some parts failed to be uploaded %v",
 			status.MissingParts)
 	}
-	select {
-	case u.MediaID = <-env.mediaIdch:
-	default:
-	}
 
 	return nil
 }
@@ -257,7 +250,6 @@ func (u *Uploader) startWorkers(s *sdk.UploadSession, r io.ReaderAt, env *env) {
 				retryDelay:  u.retryDelay,
 				partCounter: env.partCounter,
 				log:         u.DebugLog,
-				mediaIDch:   env.mediaIdch,
 			}
 			w.start()
 		}(i)
@@ -272,6 +264,10 @@ func (u *Uploader) deliverData(s *sdk.UploadSession, fsize int64, env *env, tag 
 	mp := make(map[int]struct{})
 	for _, p := range status.MissingParts {
 		mp[p] = struct{}{}
+	}
+
+	if tag == "" && u.MediaID == "" {
+		u.MediaID = status.MediaID
 	}
 
 	env.wg.Add(1)

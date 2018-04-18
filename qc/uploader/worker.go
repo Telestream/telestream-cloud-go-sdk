@@ -1,10 +1,8 @@
 package uploader
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,7 +20,6 @@ type worker struct {
 	retryDelay  time.Duration
 	partCounter *int32
 	log         *log.Logger
-	mediaIDch   chan<- string
 }
 
 func (w *worker) start() {
@@ -54,19 +51,6 @@ func (w *worker) handle(d *delivery) error {
 	defer resp.Body.Close()
 	if resp.StatusCode >= 400 {
 		return fmt.Errorf("error: status code: %d", resp.StatusCode)
-	}
-	buff, err := ioutil.ReadAll(resp.Body)
-	if err == nil {
-		var mediaIDResponse struct {
-			ID string
-		}
-		err = json.Unmarshal(buff, &mediaIDResponse)
-		if err == nil {
-			select {
-			case w.mediaIDch <- mediaIDResponse.ID:
-			default:
-			}
-		}
 	}
 	atomic.AddInt32(w.partCounter, 1)
 	return nil

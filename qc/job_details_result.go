@@ -14,4 +14,6 @@ package qc
 type JobDetailsResult struct {
 
 	Alerts []Alert `json:"alerts,omitempty"`
+
+	Reports []string `json:"reports,omitempty"`
 }

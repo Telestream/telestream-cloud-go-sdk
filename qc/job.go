@@ -14,6 +14,8 @@ type Job struct {
 
 	Id string `json:"id,omitempty"`
 
+	ProjectId string `json:"project_id,omitempty"`
+
 	Status string `json:"status,omitempty"`
 
 	State string `json:"state,omitempty"`

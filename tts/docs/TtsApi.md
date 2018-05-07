@@ -10,10 +10,10 @@ Method | HTTP request | Description
 [**CreateJob**](TtsApi.md#CreateJob) | **Post** /projects/{projectID}/jobs | Creates a new Job
 [**CreateProject**](TtsApi.md#CreateProject) | **Post** /projects | Creates a new Project
 [**DeleteCorpus**](TtsApi.md#DeleteCorpus) | **Delete** /projects/{projectID}/corpora/{name} | Creates a new Corpus
-[**DeleteJob**](TtsApi.md#DeleteJob) | **Delete** /projects/{projectID}/jobs/{id} | Deletes the Job
+[**DeleteJob**](TtsApi.md#DeleteJob) | **Delete** /projects/{projectID}/jobs/{jobID} | Deletes the Job
 [**DeleteProject**](TtsApi.md#DeleteProject) | **Delete** /projects/{projectID} | Deletes the Project
-[**Job**](TtsApi.md#Job) | **Get** /projects/{projectID}/jobs/{id} | Returns the Job
-[**JobResult**](TtsApi.md#JobResult) | **Get** /projects/{projectID}/jobs/{id}/result | Returns the Job Result
+[**Job**](TtsApi.md#Job) | **Get** /projects/{projectID}/jobs/{jobID} | Returns the Job
+[**JobResult**](TtsApi.md#JobResult) | **Get** /projects/{projectID}/jobs/{jobID}/result | Returns the Job Result
 [**Jobs**](TtsApi.md#Jobs) | **Get** /projects/{projectID}/jobs | Returns a collection of Jobs
 [**Project**](TtsApi.md#Project) | **Get** /projects/{projectID} | Returns the Project
 [**Projects**](TtsApi.md#Projects) | **Get** /projects | Returns a collection of Projects
@@ -41,7 +41,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -129,7 +129,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -157,7 +157,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -186,7 +186,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -196,7 +196,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteJob**
-> DeleteJob(ctx, projectID, jobId)
+> DeleteJob(ctx, projectID, jobID)
 Deletes the Job
 
 Deletes the Job
@@ -207,7 +207,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
   **projectID** | **string**| ID of the Project | 
-  **jobId** | **string**|  | 
+  **jobID** | **string**|  | 
 
 ### Return type
 
@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -239,7 +239,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -249,7 +249,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **Job**
-> Job Job(ctx, projectID, jobId)
+> Job Job(ctx, projectID, jobID)
 Returns the Job
 
 Returns the Job
@@ -260,7 +260,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
   **projectID** | **string**| ID of the Project | 
-  **jobId** | **string**|  | 
+  **jobID** | **string**|  | 
 
 ### Return type
 
@@ -268,7 +268,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **JobResult**
-> JobResult JobResult(ctx, projectID, jobId)
+> JobResult JobResult(ctx, projectID, jobID)
 Returns the Job Result
 
 Returns the Job Result
@@ -289,7 +289,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
   **projectID** | **string**| ID of the Project | 
-  **jobId** | **string**|  | 
+  **jobID** | **string**|  | 
 
 ### Return type
 
@@ -297,7 +297,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -335,7 +335,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -363,7 +363,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -387,7 +387,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -415,7 +415,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -443,7 +443,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 
@@ -470,7 +470,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[apiKey](../README.md#apiKey)
+[api_key](../README.md#api_key)
 
 ### HTTP request headers
 

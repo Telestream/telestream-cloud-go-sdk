@@ -23,6 +23,7 @@ Name | Type | Description | Notes
 **BufferSizeInPackets** | **string** | todo | [optional] [default to null]
 **Bumpers** | **string** |  | [optional] [default to null]
 **ByteRangeRequests** | **bool** |  | [optional] [default to null]
+**ClipEnd** | **string** | Clip ends at a specific time. | [optional] [default to null]
 **ClipLength** | **string** | A clip’s duration. | [optional] [default to null]
 **ClipOffset** | **string** | Clip starts at a specific offset. | [optional] [default to null]
 **ClosedCaptions** | **string** | One of add (adds captions as a separate streams) or burn (burns captions on video stream using the first subtitle file). By default it is not set. | [optional] [default to null]

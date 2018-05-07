@@ -32,4 +32,13 @@ type CreateVideoBody struct {
 	ExtraVariables map[string]string `json:"extra_variables,omitempty"`
 
 	PathFormat string `json:"path_format,omitempty"`
+
+	// Clip ends at a specific time.
+	ClipEnd string `json:"clip_end,omitempty"`
+
+	// A clip’s duration.
+	ClipLength string `json:"clip_length,omitempty"`
+
+	// Clip starts at a specific offset.
+	ClipOffset string `json:"clip_offset,omitempty"`
 }

@@ -68,6 +68,9 @@ type Profile struct {
 
 	ByteRangeRequests bool `json:"byte_range_requests,omitempty"`
 
+	// Clip ends at a specific time.
+	ClipEnd string `json:"clip_end,omitempty"`
+
 	// A clip’s duration.
 	ClipLength string `json:"clip_length,omitempty"`
 

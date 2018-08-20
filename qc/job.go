@@ -38,5 +38,7 @@ type Job struct {
 
 	ErrorMessage string `json:"error_message,omitempty"`
 
+	Payload string `json:"payload,omitempty"`
+
 	Details *JobDetails `json:"details,omitempty"`
 }

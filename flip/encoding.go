@@ -48,7 +48,7 @@ type Encoding struct {
 	Extname string `json:"extname,omitempty"`
 
 	// A size of the output file.
-	FileSize int32 `json:"file_size,omitempty"`
+	FileSize int64 `json:"file_size,omitempty"`
 
 	// An array of output file names.
 	Files []string `json:"files,omitempty"`

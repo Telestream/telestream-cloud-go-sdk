@@ -46,7 +46,7 @@ type Video struct {
 	Extname string `json:"extname,omitempty"`
 
 	// A size of the source file.
-	FileSize int32 `json:"file_size,omitempty"`
+	FileSize int64 `json:"file_size,omitempty"`
 
 	// Number of frames per second.
 	Fps float32 `json:"fps,omitempty"`

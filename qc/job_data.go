@@ -15,4 +15,7 @@ type JobData struct {
 	Options *Options `json:"options,omitempty"`
 
 	Url string `json:"url,omitempty"`
+
+	// Payload is an arbitrary text of length 256 or shorter that you can store along the Media. It is typically used to retain an association with one of your own DB record ID.
+	Payload string `json:"payload,omitempty"`
 }

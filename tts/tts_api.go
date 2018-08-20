@@ -712,6 +712,85 @@ func (a *TtsApiService) Job(ctx context.Context, projectID string, jobID string)
 	return successPayload, localVarHttpResponse, err
 }
 
+/* TtsApiService Returns the Job Outputs
+ Returns the Job Outputs
+ * @param ctx context.Context for authentication, logging, tracing, etc.
+ @param projectID ID of the Project
+ @param jobID 
+ @return []JobOutput*/
+func (a *TtsApiService) JobOutputs(ctx context.Context, projectID string, jobID string) ([]JobOutput,  *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Get")
+		localVarPostBody interface{}
+		localVarFileName string
+		localVarFileBytes []byte
+	 	successPayload  []JobOutput
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}/jobs/{jobID}/outputs"
+	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"jobID"+"}", fmt.Sprintf("%v", jobID), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{ "application/json",  }
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{
+		"application/json",
+		}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
+			}
+			localVarHeaderParams["X-Api-Key"] = key
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return successPayload, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return successPayload, localVarHttpResponse, err
+	}
+	defer localVarHttpResponse.Body.Close()
+	if localVarHttpResponse.StatusCode >= 300 {
+		bodyBytes, _ := ioutil.ReadAll(localVarHttpResponse.Body)
+		return successPayload, localVarHttpResponse, reportError("Status: %v, Body: %s", localVarHttpResponse.Status, bodyBytes)
+	}
+
+	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+		return successPayload, localVarHttpResponse, err
+	}
+
+
+	return successPayload, localVarHttpResponse, err
+}
+
 /* TtsApiService Returns the Job Result
  Returns the Job Result
  * @param ctx context.Context for authentication, logging, tracing, etc.

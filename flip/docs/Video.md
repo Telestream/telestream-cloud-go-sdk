@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **ErrorClass** | **string** | A class of an error that has occurred during the encoding process. It is present only if the encoding status is equal to &#x60;fail&#x60;. | [optional] [default to null]
 **ErrorMessage** | **string** | A message that explains why the encoding process has resulted in an error. It is present only if the encoding status is equal to &#x60;fail&#x60;. | [optional] [default to null]
 **Extname** | **string** | Extension of the source file. | [optional] [default to null]
-**FileSize** | **int32** | A size of the source file. | [optional] [default to null]
+**FileSize** | **int64** | A size of the source file. | [optional] [default to null]
 **Fps** | **float32** | Number of frames per second. | [optional] [default to null]
 **Height** | **int32** | Height of the output video. | [optional] [default to null]
 **Width** | **int32** | Width of the output video. | [optional] [default to null]

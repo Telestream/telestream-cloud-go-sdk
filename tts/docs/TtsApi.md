@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**DeleteJob**](TtsApi.md#DeleteJob) | **Delete** /projects/{projectID}/jobs/{jobID} | Deletes the Job
 [**DeleteProject**](TtsApi.md#DeleteProject) | **Delete** /projects/{projectID} | Deletes the Project
 [**Job**](TtsApi.md#Job) | **Get** /projects/{projectID}/jobs/{jobID} | Returns the Job
+[**JobOutputs**](TtsApi.md#JobOutputs) | **Get** /projects/{projectID}/jobs/{jobID}/outputs | Returns the Job Outputs
 [**JobResult**](TtsApi.md#JobResult) | **Get** /projects/{projectID}/jobs/{jobID}/result | Returns the Job Result
 [**Jobs**](TtsApi.md#Jobs) | **Get** /projects/{projectID}/jobs | Returns a collection of Jobs
 [**Project**](TtsApi.md#Project) | **Get** /projects/{projectID} | Returns the Project
@@ -265,6 +266,35 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Job**](Job.md)
+
+### Authorization
+
+[api_key](../README.md#api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **JobOutputs**
+> []JobOutput JobOutputs(ctx, projectID, jobID)
+Returns the Job Outputs
+
+Returns the Job Outputs
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **projectID** | **string**| ID of the Project | 
+  **jobID** | **string**|  | 
+
+### Return type
+
+[**[]JobOutput**](JobOutput.md)
 
 ### Authorization
 

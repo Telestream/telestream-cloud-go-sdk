@@ -33,7 +33,7 @@ type CreateVideoBody struct {
 
 	PathFormat string `json:"path_format,omitempty"`
 
-	// Clip ends at a specific time.
+	// Clip ends at a specific time (timecode).
 	ClipEnd string `json:"clip_end,omitempty"`
 
 	// A clip’s duration.
@@ -41,4 +41,9 @@ type CreateVideoBody struct {
 
 	// Clip starts at a specific offset.
 	ClipOffset string `json:"clip_offset,omitempty"`
+
+	StartingTimecode string `json:"starting_timecode,omitempty"`
+
+	// An individual store_id for this video processing. If provided will replace store_id from cloud factory but must match underlying cloud provider and region.
+	StoreId string `json:"store_id,omitempty"`
 }

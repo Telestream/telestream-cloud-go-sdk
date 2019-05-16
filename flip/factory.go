@@ -45,7 +45,7 @@ type Factory struct {
 	// Determines whether the Factory should be notified about new files added to the input bucket.
 	InputBucketWatch bool `json:"input_bucket_watch,omitempty"`
 
-	InputBucketFilesMap string `json:"input_bucket_files_map,omitempty"`
+	InputBucketFilesMap *interface{} `json:"input_bucket_files_map,omitempty"`
 
 	// Determines how often the input bucket is synchronised.
 	InputBucketSyncEveryNMin string `json:"input_bucket_sync_every_n_min,omitempty"`

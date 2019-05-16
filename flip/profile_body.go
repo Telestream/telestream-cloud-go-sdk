@@ -69,6 +69,11 @@ type ProfileBody struct {
 	// Clip starts at a specific offset.
 	ClipOffset string `json:"clip_offset,omitempty"`
 
+	// Clip ends at a specific time (timecode).
+	ClipEnd string `json:"clip_end,omitempty"`
+
+	PixelFormat string `json:"pixel_format,omitempty"`
+
 	// One of add (adds captions as a separate streams) or burn (burns captions on video stream using the first subtitle file). By default it is not set.
 	ClosedCaptions string `json:"closed_captions,omitempty"`
 
@@ -139,6 +144,8 @@ type ProfileBody struct {
 
 	Size string `json:"size,omitempty"`
 
+	StartingTimecode string `json:"starting_timecode,omitempty"`
+
 	Tar bool `json:"tar,omitempty"`
 
 	TransportRate string `json:"transport_rate,omitempty"`
@@ -198,7 +205,7 @@ type ProfileBody struct {
 
 	AudioStreamId string `json:"audio_stream_id,omitempty"`
 
-	Bumpers string `json:"bumpers,omitempty"`
+	Bumpers *interface{} `json:"bumpers,omitempty"`
 
 	// Determines a preset that is used by encoders.
 	CodecPreset string `json:"codec_preset,omitempty"`
@@ -246,15 +253,13 @@ type ProfileBody struct {
 
 	TelestreamSubpelMode string `json:"telestream_subpel_mode,omitempty"`
 
-	Trailers string `json:"trailers,omitempty"`
+	Trailers *interface{} `json:"trailers,omitempty"`
 
 	VantageGroupId string `json:"vantage_group_id,omitempty"`
 
 	WatermarkBumpers string `json:"watermark_bumpers,omitempty"`
 
 	WatermarkTrailers string `json:"watermark_trailers,omitempty"`
-
-	WorkorderCriteria *interface{} `json:"workorder_criteria,omitempty"`
 
 	// Enable more sensitive pulldown removal algorithm.
 	TachyonAllowRemovePulldown bool `json:"tachyon_allow_remove_pulldown,omitempty"`

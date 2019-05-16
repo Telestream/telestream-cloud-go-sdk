@@ -25,7 +25,7 @@ Name | Type | Description | Notes
 **SourceUrl** | **string** | An URL pointing to the source file. | [optional] [default to null]
 **Status** | **string** | Determines at what stage of importing process the Video is at the moment. | [optional] [default to null]
 **UpdatedAt** | **string** | A date and time when a Video has been updated last time. | [optional] [default to null]
-**VideoBitrate** | **string** | video bitrate (in bits/s) | [optional] [default to null]
+**VideoBitrate** | **int32** | video bitrate (in bits/s) | [optional] [default to null]
 **VideoCodec** | **string** | A codec that has been used to encode the input file&#39;s video streams. | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

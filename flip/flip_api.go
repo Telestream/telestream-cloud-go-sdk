@@ -107,6 +107,84 @@ func (a *FlipApiService) CancelEncoding(ctx context.Context, id string, factoryI
 	return successPayload, localVarHttpResponse, err
 }
 
+/* FlipApiService Cancel video and all encodings
+ * @param ctx context.Context for authentication, logging, tracing, etc.
+ @param id Id of a Video.
+ @param factoryId Id of a Factory.
+ @return CanceledResponse*/
+func (a *FlipApiService) CancelVideo(ctx context.Context, id string, factoryId string) (CanceledResponse,  *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Post")
+		localVarPostBody interface{}
+		localVarFileName string
+		localVarFileBytes []byte
+	 	successPayload  CanceledResponse
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/videos/{id}/cancel.json"
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", fmt.Sprintf("%v", id), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+
+	localVarQueryParams.Add("factory_id", parameterToString(factoryId, ""))
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{ "application/json",  }
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{
+		"application/json",
+		}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
+			}
+			localVarHeaderParams["X-Api-Key"] = key
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return successPayload, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return successPayload, localVarHttpResponse, err
+	}
+	defer localVarHttpResponse.Body.Close()
+	if localVarHttpResponse.StatusCode >= 300 {
+		bodyBytes, _ := ioutil.ReadAll(localVarHttpResponse.Body)
+		return successPayload, localVarHttpResponse, reportError("Status: %v, Body: %s", localVarHttpResponse.Status, bodyBytes)
+	}
+
+	if err = json.NewDecoder(localVarHttpResponse.Body).Decode(&successPayload); err != nil {
+		return successPayload, localVarHttpResponse, err
+	}
+
+
+	return successPayload, localVarHttpResponse, err
+}
+
 /* FlipApiService Copies a given Profile
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @param id Id of a Profile.
@@ -2032,8 +2110,10 @@ func (a *FlipApiService) RetryEncoding(ctx context.Context, id string, factoryId
  * @param ctx context.Context for authentication, logging, tracing, etc.
  @param id Id of an Encoding.
  @param factoryId Id of a Factory.
+ @param optional (nil or map[string]interface{}) with one or more of:
+     @param "expires" (int32) Duration in seconds for validity period.
  @return EncodingSignedUrl*/
-func (a *FlipApiService) SignedEncodingUrl(ctx context.Context, id string, factoryId string) (EncodingSignedUrl,  *http.Response, error) {
+func (a *FlipApiService) SignedEncodingUrl(ctx context.Context, id string, factoryId string, localVarOptionals map[string]interface{}) (EncodingSignedUrl,  *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Get")
 		localVarPostBody interface{}
@@ -2050,8 +2130,14 @@ func (a *FlipApiService) SignedEncodingUrl(ctx context.Context, id string, facto
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
+	if err := typeCheckParameter(localVarOptionals["expires"], "int32", "expires"); err != nil {
+		return successPayload, nil, err
+	}
 
 	localVarQueryParams.Add("factory_id", parameterToString(factoryId, ""))
+	if localVarTempParam, localVarOk := localVarOptionals["expires"].(int32); localVarOk {
+		localVarQueryParams.Add("expires", parameterToString(localVarTempParam, ""))
+	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{ "application/json",  }
 

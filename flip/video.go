@@ -78,7 +78,7 @@ type Video struct {
 	UpdatedAt string `json:"updated_at,omitempty"`
 
 	// video bitrate (in bits/s)
-	VideoBitrate string `json:"video_bitrate,omitempty"`
+	VideoBitrate int32 `json:"video_bitrate,omitempty"`
 
 	// A codec that has been used to encode the input file's video streams.
 	VideoCodec string `json:"video_codec,omitempty"`

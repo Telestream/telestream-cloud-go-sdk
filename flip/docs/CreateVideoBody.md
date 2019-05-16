@@ -11,9 +11,11 @@ Name | Type | Description | Notes
 **ExtraFiles** | [**map[string][]string**](array.md) |  | [optional] [default to null]
 **ExtraVariables** | **map[string]string** |  | [optional] [default to null]
 **PathFormat** | **string** |  | [optional] [default to null]
-**ClipEnd** | **string** | Clip ends at a specific time. | [optional] [default to null]
+**ClipEnd** | **string** | Clip ends at a specific time (timecode). | [optional] [default to null]
 **ClipLength** | **string** | A clip’s duration. | [optional] [default to null]
 **ClipOffset** | **string** | Clip starts at a specific offset. | [optional] [default to null]
+**StartingTimecode** | **string** |  | [optional] [default to null]
+**StoreId** | **string** | An individual store_id for this video processing. If provided will replace store_id from cloud factory but must match underlying cloud provider and region. | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

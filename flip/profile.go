@@ -15,7 +15,7 @@ type Profile struct {
 	// todo
 	AdvancedFpsConversion string `json:"advanced_fps_conversion,omitempty"`
 
-	// Specifies an aspect mode for output videos. The following options are available:   - letterbox:   - pad: Add paddings to the input image. Default is \"letterbox\".
+	// Specifies an aspect mode for output videos. The following options are available:   - preserve   - constrain   - letterbox   - pad   - fill (crop)   - stretch   - center Default is \"letterbox\".
 	AspectMode string `json:"aspect_mode,omitempty"`
 
 	// A display aspect ratio. By default it is not set.
@@ -48,7 +48,7 @@ type Profile struct {
 	AudioProfile string `json:"audio_profile,omitempty"`
 
 	// The number of samples of audio carried per second.
-	AudioSampleRate string `json:"audio_sample_rate,omitempty"`
+	AudioSampleRate int32 `json:"audio_sample_rate,omitempty"`
 
 	AudioStreamId int32 `json:"audio_stream_id,omitempty"`
 
@@ -64,12 +64,14 @@ type Profile struct {
 	// todo
 	BufferSizeInPackets string `json:"buffer_size_in_packets,omitempty"`
 
-	Bumpers string `json:"bumpers,omitempty"`
+	Bumpers *interface{} `json:"bumpers,omitempty"`
 
 	ByteRangeRequests bool `json:"byte_range_requests,omitempty"`
 
-	// Clip ends at a specific time.
+	// Clip ends at a specific time (timecode).
 	ClipEnd string `json:"clip_end,omitempty"`
+
+	PixelFormat string `json:"pixel_format,omitempty"`
 
 	// A clip’s duration.
 	ClipLength string `json:"clip_length,omitempty"`
@@ -101,7 +103,7 @@ type Profile struct {
 	CropInputTop string `json:"crop_input_top,omitempty"`
 
 	// Height of the cropped image in pixels.
-	CropInputWidth string `json:"crop_input_width,omitempty"`
+	CropInputWidth float32 `json:"crop_input_width,omitempty"`
 
 	DashProfile string `json:"dash_profile,omitempty"`
 
@@ -121,10 +123,10 @@ type Profile struct {
 	Extname string `json:"extname,omitempty"`
 
 	// Null value copy the original fps. By default it is not set.
-	Fps string `json:"fps,omitempty"`
+	Fps float32 `json:"fps,omitempty"`
 
 	// Evenly spaced number of generated screenshots. By default it is not set.
-	FrameCount string `json:"frame_count,omitempty"`
+	FrameCount int32 `json:"frame_count,omitempty"`
 
 	// Thumbnail interval (Frames or seconds).
 	FrameInterval string `json:"frame_interval,omitempty"`
@@ -142,18 +144,18 @@ type Profile struct {
 	H264Tune string `json:"h264_tune,omitempty"`
 
 	// Height in pixels.
-	Height string `json:"height,omitempty"`
+	Height int32 `json:"height,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
 	ImxType string `json:"imx_type,omitempty"`
 
-	Inputs string `json:"inputs,omitempty"`
+	Inputs *interface{} `json:"inputs,omitempty"`
 
 	Interlace string `json:"interlace,omitempty"`
 
 	// Adds a key frame every N frames. Default is 250, adds a key frame every 250 frames.
-	KeyframeInterval string `json:"keyframe_interval,omitempty"`
+	KeyframeInterval int32 `json:"keyframe_interval,omitempty"`
 
 	// todo
 	KeyframeRate string `json:"keyframe_rate,omitempty"`
@@ -171,7 +173,7 @@ type Profile struct {
 	// A unique machine-readable name that will identify the profile. Helpful later on for filtering encodings by profile.
 	Name string `json:"name,omitempty"`
 
-	Outputs string `json:"outputs,omitempty"`
+	Outputs *interface{} `json:"outputs,omitempty"`
 
 	// Specify the directory where the output files should be stored. By default it is not set. More information about this [here](https://cloud.telestream.net/docs#path-format---know-how).
 	OutputsPathFormat string `json:"outputs_path_format,omitempty"`
@@ -189,6 +191,8 @@ type Profile struct {
 	SegmentTime int32 `json:"segment_time,omitempty"`
 
 	Stack string `json:"stack,omitempty"`
+
+	StartingTimecode string `json:"starting_timecode,omitempty"`
 
 	TelestreamBlockSize string `json:"telestream_block_size,omitempty"`
 
@@ -209,7 +213,7 @@ type Profile struct {
 	// Human-readable name.
 	Title string `json:"title,omitempty"`
 
-	Trailers string `json:"trailers,omitempty"`
+	Trailers *interface{} `json:"trailers,omitempty"`
 
 	TransportRate string `json:"transport_rate,omitempty"`
 
@@ -225,7 +229,7 @@ type Profile struct {
 	// Pattern utilised to match HLS.Variant presets by name. Default is hls.*.
 	Variants string `json:"variants,omitempty"`
 
-	VideoBitrate string `json:"video_bitrate,omitempty"`
+	VideoBitrate int32 `json:"video_bitrate,omitempty"`
 
 	VideoPid string `json:"video_pid,omitempty"`
 
@@ -255,7 +259,7 @@ type Profile struct {
 	WatermarkWidth string `json:"watermark_width,omitempty"`
 
 	// Width in pixels.
-	Width string `json:"width,omitempty"`
+	Width int32 `json:"width,omitempty"`
 
 	X264Options string `json:"x264_options,omitempty"`
 

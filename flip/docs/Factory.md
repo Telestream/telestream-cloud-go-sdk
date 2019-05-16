@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **ServerSideEncryption** | **bool** | Specify if you want to use multi-factor server-side 256-bit AES-256 data encryption with Amazon S3-managed encryption keys (SSE-S3). Each object is encrypted using a unique key which as an additional safeguard is encrypted itself with a master key that S3 regularly rotates. By default this is not set. | [optional] [default to null]
 **InputBucketName** | **string** | A name of an input bucket. | [optional] [default to null]
 **InputBucketWatch** | **bool** | Determines whether the Factory should be notified about new files added to the input bucket. | [optional] [default to null]
-**InputBucketFilesMap** | **string** |  | [optional] [default to null]
+**InputBucketFilesMap** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **InputBucketSyncEveryNMin** | **string** | Determines how often the input bucket is synchronised. | [optional] [default to null]
 **InputBucketRecursive** | **string** |  | [optional] [default to null]
 **InputBucketFilePattern** | **string** | A pattern that will be used to locate files in the input bucket. Valid wildcards might be used. | [optional] [default to null]

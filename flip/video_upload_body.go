@@ -59,4 +59,7 @@ type VideoUploadBody struct {
 	ClipOffset string `json:"clip_offset,omitempty"`
 
 	MultiChunk bool `json:"multi_chunk,omitempty"`
+
+	// An individual store_id for this video processing. If provided will replace store_id from cloud factory but must match underlying cloud provider and region.
+	StoreId string `json:"store_id,omitempty"`
 }

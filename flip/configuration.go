@@ -63,7 +63,7 @@ func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		BasePath:      "https://api.cloud.telestream.net/flip/3.1",
 		DefaultHeader: make(map[string]string),
-		UserAgent:     "Swagger-Codegen/2.0.1/go",
+		UserAgent:     "Swagger-Codegen/2.0.4/go",
 	}
 	return cfg
 }

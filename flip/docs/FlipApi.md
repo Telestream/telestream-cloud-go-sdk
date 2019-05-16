@@ -5,6 +5,7 @@ All URIs are relative to *https://api.cloud.telestream.net/flip/3.1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**CancelEncoding**](FlipApi.md#CancelEncoding) | **Post** /encodings/{id}/cancel.json | Cancels an Encoding.
+[**CancelVideo**](FlipApi.md#CancelVideo) | **Post** /videos/{id}/cancel.json | Cancel video and all encodings
 [**CopyProfile**](FlipApi.md#CopyProfile) | **Post** /profiles/{id}/copy.json | Copies a given Profile
 [**CreateEncoding**](FlipApi.md#CreateEncoding) | **Post** /encodings.json | Creates an Encoding
 [**CreateFactory**](FlipApi.md#CreateFactory) | **Post** /factories.json | Creates a new factory
@@ -53,6 +54,33 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
   **id** | **string**| Id of an Encoding. | 
+  **factoryId** | **string**| Id of a Factory. | 
+
+### Return type
+
+[**CanceledResponse**](CanceledResponse.md)
+
+### Authorization
+
+[api_key](../README.md#api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **CancelVideo**
+> CanceledResponse CancelVideo(ctx, id, factoryId)
+Cancel video and all encodings
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **id** | **string**| Id of a Video. | 
   **factoryId** | **string**| Id of a Factory. | 
 
 ### Return type
@@ -793,7 +821,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **SignedEncodingUrl**
-> EncodingSignedUrl SignedEncodingUrl(ctx, id, factoryId)
+> EncodingSignedUrl SignedEncodingUrl(ctx, id, factoryId, optional)
 Returns a signed url pointing to an Encoding.
 
 ### Required Parameters
@@ -803,6 +831,16 @@ Name | Type | Description  | Notes
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
   **id** | **string**| Id of an Encoding. | 
   **factoryId** | **string**| Id of a Factory. | 
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **string**| Id of an Encoding. | 
+ **factoryId** | **string**| Id of a Factory. | 
+ **expires** | **int32**| Duration in seconds for validity period. | 
 
 ### Return type
 

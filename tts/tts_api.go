@@ -567,8 +567,9 @@ func (a *TtsApiService) DeleteJob(ctx context.Context, projectID string, jobID s
 /* TtsApiService Deletes the Project
  Deletes the Project
  * @param ctx context.Context for authentication, logging, tracing, etc.
+ @param projectID ID of the Project
  @return */
-func (a *TtsApiService) DeleteProject(ctx context.Context) ( *http.Response, error) {
+func (a *TtsApiService) DeleteProject(ctx context.Context, projectID string) ( *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Delete")
 		localVarPostBody interface{}
@@ -578,6 +579,7 @@ func (a *TtsApiService) DeleteProject(ctx context.Context) ( *http.Response, err
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -1188,9 +1190,10 @@ func (a *TtsApiService) TrainProject(ctx context.Context, projectID string) ( *h
 /* TtsApiService Updates an existing Project
  Updates an existing Project
  * @param ctx context.Context for authentication, logging, tracing, etc.
+ @param projectID ID of the Project
  @param project 
  @return Project*/
-func (a *TtsApiService) UpdateProject(ctx context.Context, project Project) (Project,  *http.Response, error) {
+func (a *TtsApiService) UpdateProject(ctx context.Context, projectID string, project Project) (Project,  *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Put")
 		localVarPostBody interface{}
@@ -1201,6 +1204,7 @@ func (a *TtsApiService) UpdateProject(ctx context.Context, project Project) (Pro
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/projects/{projectID}"
+	localVarPath = strings.Replace(localVarPath, "{"+"projectID"+"}", fmt.Sprintf("%v", projectID), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

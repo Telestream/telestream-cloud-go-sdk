@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Profiles** | **string** |  | [optional] [default to null]
 **MultiChunk** | **bool** |  | [optional] [default to null]
 **ExtraFiles** | [**[]ExtraFile**](ExtraFile.md) | A list of names of additional files that will be uploaded. | [optional] [default to null]
+**Job** | [***Job**](Job.md) |  | [optional] [default to null]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

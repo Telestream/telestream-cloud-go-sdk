@@ -52,7 +52,10 @@ type Job struct {
 	Format string `json:"format,omitempty"`
 
 	// The file size of the input file.
-	FileSize int32 `json:"file_size,omitempty"`
+	FileSize int64 `json:"file_size,omitempty"`
+
+	// Words used for model training, separated by space.
+	CustomWords string `json:"custom_words,omitempty"`
 
 	// A date and time when the job was created
 	CreatedAt string `json:"created_at,omitempty"`

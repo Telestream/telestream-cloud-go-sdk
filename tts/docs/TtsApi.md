@@ -226,13 +226,17 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **DeleteProject**
-> DeleteProject(ctx, )
+> DeleteProject(ctx, projectID)
 Deletes the Project
 
 Deletes the Project
 
 ### Required Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **projectID** | **string**| ID of the Project | 
 
 ### Return type
 
@@ -455,7 +459,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **UpdateProject**
-> Project UpdateProject(ctx, project)
+> Project UpdateProject(ctx, projectID, project)
 Updates an existing Project
 
 Updates an existing Project
@@ -465,6 +469,7 @@ Updates an existing Project
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+  **projectID** | **string**| ID of the Project | 
   **project** | [**Project**](Project.md)|  | 
 
 ### Return type

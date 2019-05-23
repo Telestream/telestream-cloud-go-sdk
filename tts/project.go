@@ -39,6 +39,8 @@ type Project struct {
 	// Words used for model training, separated by space.
 	CustomWords string `json:"custom_words,omitempty"`
 
+	Capabilities []string `json:"capabilities,omitempty"`
+
 	// A date and time when the project was created
 	CreatedAt string `json:"created_at,omitempty"`
 

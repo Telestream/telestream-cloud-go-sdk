@@ -24,4 +24,6 @@ type VideoUploadBody struct {
 
 	// A list of names of additional files that will be uploaded.
 	ExtraFiles []ExtraFile `json:"extra_files,omitempty"`
+
+	Job *Job `json:"job,omitempty"`
 }

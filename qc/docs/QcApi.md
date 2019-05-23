@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**CreateProject**](QcApi.md#CreateProject) | **Post** /projects.json | Create a new project
 [**GetJob**](QcApi.md#GetJob) | **Get** /projects/{project_id}/jobs/{job_id}.json | Get QC job
 [**GetProject**](QcApi.md#GetProject) | **Get** /projects/{project_id}.json | Get project by Id
+[**ImportTemplate**](QcApi.md#ImportTemplate) | **Post** /projects/import.json | Import Vidchecker template
 [**ListJobs**](QcApi.md#ListJobs) | **Get** /projects/{project_id}/jobs.json | Get jobs form projects
 [**ListProjects**](QcApi.md#ListProjects) | **Get** /projects.json | List all projects for an account
 [**ModifyProject**](QcApi.md#ModifyProject) | **Put** /projects/{project_id}.json | Modify project
@@ -156,6 +157,40 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **ImportTemplate**
+> []InlineResponse200 ImportTemplate(ctx, optional)
+Import Vidchecker template
+
+### Required Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ctx** | **context.Context** | context for logging, tracing, authentication, etc.
+ **optional** | **map[string]interface{}** | optional parameters | nil if no parameters
+
+### Optional Parameters
+Optional parameters are passed through a map[string]interface{}.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **name** | **string**|  | 
+ **file** | ***os.File**|  | 
+
+### Return type
+
+[**[]InlineResponse200**](inline_response_200.md)
+
+### Authorization
+
+[api_key](../README.md#api_key)
+
+### HTTP request headers
+
+ - **Content-Type**: text/xml
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

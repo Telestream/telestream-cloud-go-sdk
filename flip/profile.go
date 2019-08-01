@@ -163,7 +163,7 @@ type Profile struct {
 	Lang string `json:"lang,omitempty"`
 
 	// A max bitrate tolerance (in bits/s). By default this is not set.
-	MaxRate string `json:"max_rate,omitempty"`
+	MaxRate int32 `json:"max_rate,omitempty"`
 
 	MergeAudioStreams string `json:"merge_audio_streams,omitempty"`
 

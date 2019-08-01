@@ -58,7 +58,7 @@ Name | Type | Description | Notes
 **KeyframeInterval** | **int32** | Adds a key frame every N frames. Default is 250, adds a key frame every 250 frames. | [optional] [default to null]
 **KeyframeRate** | **string** | todo | [optional] [default to null]
 **Lang** | **string** |  | [optional] [default to null]
-**MaxRate** | **string** | A max bitrate tolerance (in bits/s). By default this is not set. | [optional] [default to null]
+**MaxRate** | **int32** | A max bitrate tolerance (in bits/s). By default this is not set. | [optional] [default to null]
 **MergeAudioStreams** | **string** |  | [optional] [default to null]
 **MuteAudioTracks** | **bool** | Remove audio from input video file. By default it is set to &#x60;false&#x60;. | [optional] [default to null]
 **Name** | **string** | A unique machine-readable name that will identify the profile. Helpful later on for filtering encodings by profile. | [optional] [default to null]

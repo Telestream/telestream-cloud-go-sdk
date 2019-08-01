@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **AudioSampleRate** | **int32** | The number of samples of audio carried per second. | [optional] [default to null]
 **AudioStreams** | **int32** | Sets the number of audio streams. | [optional] [default to null]
 **AvcintraClass** | **string** | class of the AVC-Intra video coding. | [optional] [default to null]
-**BufferSize** | **string** | Sets the buffer size, and can be 1-2 seconds for most gaming screencasts, and up to 5 seconds for more static content. You will have to experiment to see what looks best for your content. | [optional] [default to null]
+**BufferSize** | **int32** | Sets the buffer size, and can be 1-2 seconds for most gaming screencasts, and up to 5 seconds for more static content. You will have to experiment to see what looks best for your content. | [optional] [default to null]
 **BufferSizeInPackets** | **string** | todo | [optional] [default to null]
 **ClipLength** | **string** | Sets the clip’s duration. | [optional] [default to null]
 **ClipOffset** | **string** | Clip starts at a specific offset. | [optional] [default to null]

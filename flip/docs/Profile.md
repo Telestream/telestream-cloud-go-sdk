@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 **AudioStreamId** | **int32** |  | [optional] [default to null]
 **AudioStreams** | **int32** | A number of audio streams. | [optional] [default to null]
 **AvcintraClass** | **string** | A class of the AVC-Intra video coding. | [optional] [default to null]
-**BufferSize** | **string** | Determines the size of the PulseAudio buffer. by default it is not set. | [optional] [default to null]
+**BufferSize** | **int32** | Determines the size of the PulseAudio buffer. by default it is not set. | [optional] [default to null]
 **BufferSizeInPackets** | **string** | todo | [optional] [default to null]
 **Bumpers** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
 **ByteRangeRequests** | **bool** |  | [optional] [default to null]

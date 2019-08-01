@@ -59,7 +59,7 @@ type Profile struct {
 	AvcintraClass string `json:"avcintra_class,omitempty"`
 
 	// Determines the size of the PulseAudio buffer. by default it is not set.
-	BufferSize string `json:"buffer_size,omitempty"`
+	BufferSize int32 `json:"buffer_size,omitempty"`
 
 	// todo
 	BufferSizeInPackets string `json:"buffer_size_in_packets,omitempty"`

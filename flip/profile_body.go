@@ -58,7 +58,7 @@ type ProfileBody struct {
 	AvcintraClass string `json:"avcintra_class,omitempty"`
 
 	// Sets the buffer size, and can be 1-2 seconds for most gaming screencasts, and up to 5 seconds for more static content. You will have to experiment to see what looks best for your content.
-	BufferSize string `json:"buffer_size,omitempty"`
+	BufferSize int32 `json:"buffer_size,omitempty"`
 
 	// todo
 	BufferSizeInPackets string `json:"buffer_size_in_packets,omitempty"`

@@ -213,7 +213,7 @@ func (u *Uploader) uploadExtraFiles(ctx context.Context, s *sdk.UploadSession, e
 	if extraFiles == nil {
 		return nil
 	}
-	extraFilesResponse := (*s.ExtraFiles).(map[string]interface{})
+	extraFilesResponse := s.ExtraFiles
 
 	for _, tag := range *extraFiles {
 		for i, file := range tag.Files {

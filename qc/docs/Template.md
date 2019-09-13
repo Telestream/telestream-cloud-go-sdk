@@ -1,13 +1,14 @@
 # Template
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Name** | **string** |  | [optional] [default to null]
-**Type_** | **string** |  | [optional] [default to null]
-**Description** | **string** |  | [optional] [default to null]
-**Produces** | **map[string]string** |  | [optional] [default to null]
-**Takes** | **map[string]string** |  | [optional] [default to null]
+**Name** | **string** |  | [optional] 
+**Type** | **string** |  | [optional] 
+**Description** | **string** |  | [optional] 
+**Produces** | [**map[string]interface{}**](.md) |  | [optional] 
+**Takes** | [**map[string]interface{}**](.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
